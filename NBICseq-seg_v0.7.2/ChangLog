@@ -1,0 +1,34 @@
+In Version 0.2 add a new function to handle one sample case
+
+In Version 0.3, wrote a C program to perform the bootstrap test
+
+In Version 0.4, add one function to control for the data set with large variance
+
+In Version 0.4.1, readme was added
+
+In Version 0.5, report tumor/expected ratio, 
+		added function to scale lambda depending on the noise level of the data
+		perform permutation test for two-sample BIC-seq
+		for two sample case, always remove the regions according to the expected read count (largly equivalent to remove regions with low mappability)
+
+In Version 0.5.1, use a more stringent scaling factor for the lambda paramamter
+		  removed ealier verion of MBIC-seq (ealier than v0.1.5)
+
+In Version 0.5.2, add an option such that a user can specify if he/she want the stringent scaling factor for the lambda parameter or not
+		  Fixed a bug in read.c
+
+In Version 0.6, add a function to perform CNV genotyping in given regions.
+
+In Version 0.6.1, modified the method for pvalue assignment of CNV genotyping
+
+In Version 0.6.2, changed the program countRead.c; force the read count in the bad regions as zero.
+		  Bad regions means the total size of the bins overlapping the given region is much larger than the given region. 
+		  This usually caused by large bin size in the normalized data or low mappability near the given region. 
+		  In any case, the genotyping results in these regions are not reliable, and so we set the read count in these regions as zero
+
+
+In Version 0.6.3, for two sample case, do not filter region by expected read count in segments.
+		  for two sampe case, use lambda/2 at the first step the segmentation
+
+IN Version 0.7.2 fixed a bug in reportOneSample.R (for one sample one library case)
+

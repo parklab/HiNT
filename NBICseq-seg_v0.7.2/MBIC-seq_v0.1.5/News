@@ -1,0 +1,7 @@
+
+In Version 0.1.1: changed input as the stdin
+In Version 0.1.2: added one more step to remove the regions with log2  copy rartios of all samples consistently greater or less than a fixed threshold as these are highly likely to be false positives (regions that cannot be explained by normalization procedure)
+
+In Version 0.1.4: only remove the regions whose copy ratios are consistently greater than a fixed threshold
+
+In Version 0.1.5: updated read.c (the new read.c fixed a bug for reading files with no numeric rows)

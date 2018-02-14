@@ -1,0 +1,181 @@
+#!/usr/bin/env python
+
+#########################
+####     Su Wang      ###
+####    1-11-2018     ###
+####   version 1.0    ###
+#########################
+
+"""Script Description:
+
+HiNT - HiC for copy Number variations and Translocations detection
+
+Part1:
+Hi-C data preprocessing (fastq or bam format).
+1, align to the genome via bwa-mem if the data format is fastq (skip if the data format is bam)
+2, create valid read pairs (.pairs format) and chimeric read pairs (.pairsam format) with pairsamtools
+3, create contact matrix with cooler or juicer tools in .cool or .hic format
+
+Part2:
+HiNT for CNV detection
+1, extract 50kb (default) unnormalized contact matrices (.cool/.hic) or with input as a dense or sparse matrix format
+2, calculate 1D coverage, GC content, mappability, and the number of restriction cutting sites in each 50kb bin (as default)
+3, get residuals from GAM with Poisson linked function
+4, segmentation with BIC-seq segmentation algorithm
+5, visualization of CNVs
+
+Part3:
+HiNT for translocations detection
+1, extract normalized Hi-C contact matrices in 100kb and 1Mb resolution with .cool or .hic format, or with the input as dense or sparse matrix fotmat
+2, calculate the adjusted contact matrices with the in-house background contact matrices
+3, calculate the rank product for each 1Mb resolution inter-chromosomal contact matrice to define the translocated chromosomal pairs
+4, calculate the breakpoints based on contact matrices in 100kb resolution using a 1D coverage profile
+5, Integrate with chimeric read pairs, refine the breakpoints to 1bp resolution
+
+
+This code is free software; you can redistribute it and/or modify it.
+
+@version: $1.0$
+@author: Su Wang
+@contact: wangsu0623@gmail.com
+"""
+
+import os,sys
+import argparse as ap
+
+def prepare_argparser():
+    """Prepare optparser object. New options will be added in this
+    function first.
+
+    """
+    description = "HiNT --- Hic for copy Number variations and Translocations detection"
+    epilog = "For command line options of each command, type: %(prog)s COMMAND -h"
+
+    argparser = ap.ArgumentParser( description = description, epilog = epilog) #, usage = usage
+    HiNT_VERSION = '1.0'
+    argparser.add_argument("--version", action="version", version="%(prog)s " + HiNT_VERSION)
+    subparsers = argparser.add_subparsers( help = "sub-command help", dest = 'subcommand_name' ) #help="sub-command help"
+
+    # command for 'hint hic-processing'
+    add_hicprocessing_parser( subparsers )
+
+    # command for 'hint cnv detection'
+    add_cnv_parser( subparsers )
+
+    # command for 'hint translication detection'
+    add_translocation_parser( subparsers )
+
+    return argparser
+
+def add_hicprocessing_parser(subparsers):
+    """
+    Add hic data preprocessing argument parsers.
+    """
+    preparser = subparsers.add_parser("pre", help="HiNT for Hi-C data preprocessing: raw Hi-C --> HiC contact matrix and chimeric read pairs",
+                                        description="HiNT-pre: Preprocessing Hi-C data, alignment, create contact matrices, and normalization.\n\
+                                        EXAMPLE: hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir \n\
+                                        -- pairsampath /path/to/pairsamtools")
+    #Main Arguments
+    preparser.add_argument("-d","--data",dest="hicdata",type=str,required = True,
+                         help="Hi-C raw data with fastq format, two mates seperate with a comma ',', or bam file after alignment.")
+    preparser.add_argument("-a","--alignerbwa",dest="bwapath",type=str,required = False,
+                         help="Path to your BWA aligner, required when your input file(s) is in fastq format, ignore when you input a bam file.")
+    preparser.add_argument("-i","--bwaIndex",dest="bwaIndex",type=str,required = False,
+                         help="Path to BWA Index if your input file is fastq format, ignore if your input is bam file.")
+    preparser.add_argument("-g","--genome",dest="genome", choices = ("hg38","hg19","mm10"),default="hg19",
+                         help="Specify your species, choose from hg38, hg19, and mm10. DEFAULT: hg19")
+    preparser.add_argument("--informat",dest="inputformat",type=str,required = False, choices = ("fastq","bam"),default="fastq",
+                         help="Format for the Hi-C input data, choose from 'fastq' and 'bam', DEFAULT: fastq")
+    preparser.add_argument("--outformat",dest="outputformat",type=str,required = False, choices = ("cooler","juicer"),default="cooler",
+                         help="Format for the output contact matrix, choose from 'cooler' and 'juicer', DEFAULT: cooler")
+    preparser.add_argument("-r","--resolution",dest="resolution",type=int,required = False,
+                         help="Generate Hi-C contact matrix in user specified resolution. If not set, HiNT will only output Hi-C contact matrix in 50kb, 100kb, and 1Mb")
+    preparser.add_argument("--coolerpath",dest="coolerpath",type=str,required = False,
+                         help="Path to cooler tool, required when the format is cool via cooler")
+    preparser.add_argument("--juicerpath",dest="juicerpath",type=str,required = False,
+                         help="Path to juicer tools, required when the format is hic via juicer tools")
+    preparser.add_argument("--pairsampath",dest="pairsampath",type=str,required = True,
+                         help="Path to pairsamtools")
+    preparser.add_argument("-n","--name",dest="name",type=str,
+                         help="Prefix for the result files. If not set, 'NA' will be used instead")
+    preparser.add_argument("-o","--outdir", dest="outdir", type=str, required = False,
+                         help="Path to the output directory, where you want to store all the output files, if not set, the current directory will be used")
+
+    return
+
+def add_cnv_parser(subparsers):
+    """
+    Add HiNT for CNV detection argument parsers.
+    """
+    cnvparser = subparsers.add_parser('cnv', help = "Copy Number Vairations detection from Hi-C",
+                                        description="HiNT cnv: prediction of copy number information, as well as segmentation from Hi-C.\n\
+                                        EXAMPLE: hint cnv -m contactMatrix.mcool -f cooler -r 50 -g hg19 -n test -o /path/to/outputDir")
+
+    #Main Arguments
+    cnvparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
+                         help="The matrix compressed file contains single or multiple resolutions Hi-C contact matrix files (multi-cool, or hic file), \n\
+                         resolution should be set via parameter -r; or a sparse | dense format matrix file whole genome widely (not suggest when using a high resolution)")
+    cnvparser.add_argument("--bicseq",dest="bicseq",type=str,required = True, help="/path/to/bicseqDir/")
+    cnvparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer","sparse","dense"), default="cooler",
+                         help="Format for the output contact matrix, DEFAULT: cooler")
+    cnvparser.add_argument("-r","--resolution",dest="resolution",type=int,required = False, default=50,
+                         help="Resolution for the Hi-C contact matrix used for the CNV detection, unit: kb, DEFAULT: 50kb")
+    cnvparser.add_argument("-g","--genome",dest="genome", choices = ("hg38","hg19","mm10"), default="hg19",required=False,
+                         help="Specify your species, choose form hg38, hg19, and mm10. DEFAULT: hg19")
+    cnvparser.add_argument("-o","--outdir", dest="outdir", type = str, help = "Path to the output directory, where you want to store all the output files, if not set, the current directory will be used")
+    cnvparser.add_argument("-n","--name",dest="name",type=str,
+                         help="Prefix for the result files. If not set, 'NA' will be used instead")
+
+    return
+
+def add_translocation_parser(subparsers):
+    """
+    Add HiNT for interchromosomal translocations detection argument parsers.
+    """
+    tranlparser = subparsers.add_parser("transl", help="Identify translocated chromosomal pairs, and detect the breakpoints in 100kb as well as 1bp resolution",
+                                        description="HiNT-transl: interchromosomal translocations and breakpoints detection from Hi-C inter-chromosomal interaction matrices.\n\
+                                        EXAMPLE: hint transl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir")
+    #Main Arguments
+    tranlparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
+                         help="The matrix compressed file contains 1Mb and 100kb resolutions Hi-C contact matrix (.hic format), or 1Mb and 100kb resolution files seperate with ',', like /path/to/data_1Mb.cool,/path/to/data_100kb.cool\n\
+                         or the directory that contain Hi-C interaction matrix in sparse or dense matrix format, interchromosomal interaction matrices only. Absolute path is required")
+    tranlparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer","sparse","dense"), default="cooler",
+                         help="Format for the output contact matrix, DEFAULT: cooler")
+    tranlparser.add_argument("--chimeric",dest="chimeric",type=str,required = False,
+                         help="Chimeric read pairs with .pairsam format. If no chimeric reads provided, breakpoints in 100kb resolution will be output only")
+    tranlparser.add_argument("--backdir",dest="backgroundInterChromMatrixDir",type=str,required = True,
+                         help="Directory to backgroundInterchromMatrixDir, located in the install package, named as backgroundMatrices")
+    tranlparser.add_argument("-c","--cutoff",dest="cutoff",type=float,required = False,default=0.05,
+                         help="Cutoff of the rank product for chromosomal pairs to select candidate translocated chromosomal pairs, default = 0.05")
+    tranlparser.add_argument("-g","--genome",dest="genome", choices = ("hg38","hg19","mm10"), default="hg19",required=False,
+                         help="Specify your species, choose form hg38, hg19, and mm10. DEFAULT: hg19")
+    tranlparser.add_argument("-o","--outdir", dest="outdir", type = str,required=False, help = "Path to the output directory, where you want to store all the output files, if not set, the current directory will be used")
+    tranlparser.add_argument("-n","--name",dest="name",type=str,required=False,
+                         help="Prefix for the result files. If not set, 'NA' will be used instead")
+
+
+    return
+
+def main():
+    """ The Main function/pipeline for HiNT """
+    #parse options...
+    argparser = prepare_argparser()
+    args = argparser.parse_args()
+
+    subcommand = args.subcommand_name
+    if subcommand == "pre" or not subcommand:
+        from HiNT.runhint import prerun
+        prerun(argparser)
+    if subcommand == "cnv":
+        from HiNT.runhint import cnvrun
+        cnvrun(argparser)
+    if subcommand == "transl":
+        from HiNT.runhint import translrun
+        translrun(argparser)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.stderr.write("User interrunpt me! ;-) Bye!\n")
+        sys.exit(0)

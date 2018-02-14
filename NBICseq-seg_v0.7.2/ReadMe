@@ -1,0 +1,81 @@
+This program is used to call CNVs from high-throughput sequencing data with or without a control. We assume that the sequencing data (both case and control) have been normlized and binned (1 bp bin is allowed). 
+
+Usage:
+BICseq.pl [options] <configFile> <output>
+Options:
+        --lambda=<float>: the (positive) penalty used for BIC-seq
+        --tmp=<string>: the tmp directory
+        --help: pring this message
+        --fig=<string>: plot the CNV profile in a png file
+        --title=<string>: the title of the figure
+        --nrm: do not remove germline CNVs (with a matched normal) or false positives (without a matched normal)
+        --bootstrap: perform bootstrap test to assign confidence (only for one sample case)
+        --noscale: do not automatically adjust the lambda parameter according to the noise level in the data
+	--strict: if specified, use a more stringent method to ajust the lambda parameter
+
+
+1. <configFile> should be a tab-delimited 2- or 3-column. If it is a 2-column file, BIC-seq will call CNVs without a control; if it is a 3-column file, BIC-seq will call CNVs with a control. 
+The first line of <configFile> is assumed to be the header and will be IGNORED (though it should still be 2- or 3-column). 
+
+In case of being a 2-column file, <configFile> should be like
+chrom	case
+chr1	chr1.normalized.bin.txt
+....
+
+The first column indicates the chromosome name of this row, and the second column specifies the location of the binned normalized data of this chromosome. 
+The binned normalized data should be a tab-delimited file with at least 4 columns (i.e. like the output of the normWGS normalization procedure). The first 4 columns should be 
+<Start Position of the Bin>	<End Position of the Bin>	<Observed Read count in the Bin>	<Expected Read Count in the Bin>
+
+In case of being a 3-column file, <configFile> should be like
+chrom	case	control
+chr1	chr1.case.normalized.bin.txt	chr1.control.normalized.bin.txt
+....
+
+The first two columns of this file are the same as the 2-column case, and the third column is the binned normalized data for the control data set. 
+Note that the bin size MUST be the same for the case and the control and the number of the bins also MUST be the same; otherwise the program may crash.
+
+
+2. <output>: the final segmentation results. One may choose the CNVs by log2.copyRatio and pvalues (if --bootstrap is specified). 
+
+
+
+3. --fig=<string>: if this is specified, plot the CNV profile in a png file (the file will be <string>). In this plot, the regions that are significant (pvalue < 0.01) and whose log2 copy ratio (log2.copyRatio) greater than 0.2 or (less than -0.2) will be plotted in red. All other regions will be plotted as green.
+
+
+4. --noscale: if this option is specified, this program will not automatically ajust the lambda parameter according to the noise level in the data
+
+5. --strict: if specified, use a more stringent method to ajust the lambda parameter; this option is for very noisy data sets. Note that if this is specified, many small CNVs will be missed. 
+
+
+
+
+This program can also be used to genotype CNVs in given regions
+
+Usage:
+genotype.pl [options] <configFile> <RegionFile> <Output>
+Options:
+        --tmp=<string>: the tmp directory; If unspecified, use /home/ruibin/software/MBIC-seq/BICseqOnNormalizedData/NBICseq_v0.6/tmp/
+        --help: pring this messag
+
+<configFile> should be in the same format as <configFile> for BICseq.pl. If this file has 2 columns, this program will test if the given regions harbor germline CNVs. If this file has 3 columns, this program will test if the given regions have somatic CNVs.
+
+<RegionFile> should be a tab-delimited 3 column file. The first row of this file is assumed to be the header of the file, ans is IGNORED. The three columns should be like
+<Chromosome Name>	<Start Position>	<End Position>
+Each row of this file corresponds to one region of interest. The rows may overlap with each other.
+
+<Output> report the log2 copy ratio and pvalues for each region (plus information like read count and the expected read count, etc. ). 
+	In case of one sample test, <Output> is
+		chrom	start	end	binNum	tumor	tumor_expect	log2.copyRatio	pvalue
+		....
+
+	In case of two sample test, <Output> is
+		chrom	start	end	binNum	tumor	tumor_expect	normal	normal_expect	log2.copyRatio	log2.TumorExpectRatio	pvalue	pvalue.TumorVsExpected
+		....
+
+
+Note that the read counts in <Output> is not the read count in the given region, but the read counts in the bins overlapping with the given regions
+
+Ruibin Xi
+Harvard Medical School
+Mar 12 2012 
+ruibinxi@gmail.com
