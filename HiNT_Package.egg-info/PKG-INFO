@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: HiNT-Package
+Version: 1.0
+Summary: HiNT -- HiC for copy number vairations and translocations detection 
+Home-page: UNKNOWN
+Author: Su Wang
+Author-email: wangsu0623@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Artistic License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
