@@ -6,7 +6,7 @@ HiNT is a computational approach, which can be applied to detect CNVs and inter-
 
 #### overview of HiNT workflow: 
 
-<img src="https://github.com/suwangbio/HiNT/blob/master/images/HiNToverview.png" width="500">
+<img src="https://github.com/suwangbio/HiNT/blob/master/images/HiNToverview.png" width="600">
 
 
 
