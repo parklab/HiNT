@@ -16,15 +16,15 @@ HiNT is a computational approach, which can be applied to detect CNVs and inter-
 R and R packages
 
 1. [R >= 3.4](https://www.r-project.org/)
-2. [strucchange] (https://cran.r-project.org/web/packages/strucchange/index.html) 
-3. [parallel] (https://www.rdocumentation.org/packages/parallel/versions/3.4.1)
-4. [Cairo] (https://cran.r-project.org/web/packages/Cairo/index.html)
-5. [optparse] (https://cran.r-project.org/web/packages/optparse/index.html)
+2. [strucchange](https://cran.r-project.org/web/packages/strucchange/index.html) 
+3. [parallel](https://www.rdocumentation.org/packages/parallel/versions/3.4.1)
+4. [Cairo](https://cran.r-project.org/web/packages/Cairo/index.html)
+5. [optparse](https://cran.r-project.org/web/packages/optparse/index.html)
 
 
 Python and Python packages
 
-1. [python >= 2.7] (https://www.python.org/)
+1. [python >= 2.7](https://www.python.org/)
 
 ### Install
 ```$ python setup.py install ```
