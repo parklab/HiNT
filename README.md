@@ -6,7 +6,7 @@
 
 #### overview of HiNT workflow: 
 
-<img src="https://github.com/suwangbio/HiNT/blob/master/images/HiNT_workflow.png" width="600">
+<img align="center" src="https://github.com/suwangbio/HiNT/blob/master/images/HiNT_workflow.png" width="600">
 
 
 
