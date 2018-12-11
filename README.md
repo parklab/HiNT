@@ -27,6 +27,11 @@ Python and Python packages
 4. [pairtools](https://github.com/mirnylab/pairtools)
 5. [numpy](https://www.scipy.org/install.html), [scipy](https://www.scipy.org/install.html), [pandas](https://pandas.pydata.org/), [sklearn](https://scikit-learn.org/stable/install.html), [multiprocessing](https://pypi.org/project/multiprocess/)
 
+Other dependencies
+
+1. [samtools](http://www.htslib.org/doc/) (1.3.1+)
+
+
 ### Install
 ```$ python setup.py install ```
 
