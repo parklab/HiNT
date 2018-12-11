@@ -5,7 +5,7 @@
 **HiNT** (**Hi**-C for copy **N**umber variation and **T**ranslocation detection), a computational method to detect CNVs and Translocations from Hi-C data. HiNT has three main components: **HiNT-PRE**, **HiNT-CNV**, and **HiNT-TL**. HiNT-PRE preprocesses Hi-C data and computes the contact matrix, which stores contact frequencies between any two genomic loci; both HiNT-CNV and HiNT-TL starts with HI-C contact matrix, predicts copy number segments, and inter-chromosomal translocations, respectively 
 
 #### Overview of HiNT workflow: 
-<img src="https://github.com/suwangbio/HiNT/blob/master/images/HiNT_workflow.png" width="600">
+<img src="https://github.com/suwangbio/HiNT/blob/master/images/HiNT_workflow.png" width="800">
 
 ## Installation
 
