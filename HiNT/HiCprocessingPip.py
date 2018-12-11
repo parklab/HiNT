@@ -6,7 +6,7 @@ from pkg_resources import resource_filename
 def runBWA(opts,dataInfo):
     fq1,fq2 = opts.hicdata
     outbam = os.path.join(opts.outdir, opts.name + '.bam')
-    command = '%s mem -SP5M -t 8 %s %s %s | /opt/samtools-1.3/bin/samtools view -Snb - > %s'%(opts.bwapath,opts.bwaIndex,fq1,fq2,outbam)
+    command = '%s mem -SP5M -t 8 %s %s %s | %s view -Snb - > %s'%(opts.bwapath,opts.bwaIndex,fq1,fq2,opts.samtoolspath,outbam)
     Info("Alignment with BWA-mem")
     print command
     #run_cmd(command)
@@ -17,8 +17,9 @@ def runBWA(opts,dataInfo):
 
 def runpairsamtools(dataInfo,opts):
     inbam = dataInfo['bam']
+    chromsizef = resource_filename('HiNT', 'references/hg19.len')
     outpairsam = os.path.join(opts.outdir,opts.name + '.pairsam.gz')
-    command = '/opt/samtools-1.3/bin/samtools view -h %s | %s parse -c /home/sw229/RefData/hg19.len -o %s --assembly hg19'%(inbam,opts.pairsampath,outpairsam)
+    command = '%s view -h %s | %s parse -c %s -o %s --assembly hg19'%(opts.samtoolspath,inbam,opts.pairsampath,chromsizef,outpairsam)
     print(command)
     #run_cmd(command)
     dataInfo['pairsam']=outpairsam
@@ -95,7 +96,7 @@ def runcooler(dataInfo,opts):
         print(command3)
         run_cmd(command3)
         dataInfo['%skb_cool'%(str(resolutions[i]))] = outcool
-        
+
     return dataInfo
 
 def runjuicer(dataInfo,opts):

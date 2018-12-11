@@ -34,7 +34,7 @@ def main():
           install_requires=['argparse','numpy'],
           packages=['HiNT'],
           scripts=['bin/hint'],
-          package_data={'HiNT':['references/*','backgroundMatrices/100kb/*','backgroundMatrices/1Mb/*','externalScripts/*','externalScripts/NBICseq-seg_v0.7.2/*']},
+          package_data={'HiNT':['references/*','backgroundMatrices/100kb/*','backgroundMatrices/1Mb/*','externalScripts/*']},
 
           classifiers=[
             'Development Status :: 4 - Beta',

@@ -22,6 +22,7 @@ def getchromsize(chromlengthf):
 	return chromSizeInfo
 
 def readFilteredBPs(breakpointsf,chromSizeInfo):
+	#breakpointsf is a list of breakpoints in 100kb resolution, format like: chr10_chr18; chr10; 424; chr18; 251
 	bpInfo = {}
 	inf = open(breakpointsf)
 	for line in inf:
@@ -233,7 +234,7 @@ def further_filtering(clip_Pos_statistics,bp1,bp2):
 def getReads(bpInfo,chromSizeInfo,chimericReadPairs,outdir,outnam,windowsize=5,window_size=10):
 	#windowsize is for the break point region detected from Hi-C, window_size is for the sliding window searching size
 	tb = pypairix.open(chimericReadPairs)
-	output = os.path.join(outdir,outname + '.supportedReads.txt')
+	output = os.path.join(outdir,outname + '.supportedReads.txt') #all supported reads 
 	outf = open(output,'w')
 	output2 = os.path.join(outdir,outname + '.doubleValidated_pairs_BPs.txt')
 	outp2 = open(output2,'w')
