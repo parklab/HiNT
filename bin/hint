@@ -78,6 +78,8 @@ def add_hicprocessing_parser(subparsers):
     #Main Arguments
     preparser.add_argument("-d","--data",dest="hicdata",type=str,required = True,
                          help="Hi-C raw data with fastq format, two mates seperate with a comma ',', or bam file after alignment.")
+    preparser.add_argument("--samtoolspath",dest="samtoolspath",type=str,required = True,
+                         help="Path to samtools, e.g./n/app/samtools/1.3.1/bin/samtools")
     preparser.add_argument("-a","--alignerbwa",dest="bwapath",type=str,required = False,
                          help="Path to your BWA aligner, required when your input file(s) is in fastq format, ignore when you input a bam file.")
     preparser.add_argument("-i","--bwaIndex",dest="bwaIndex",type=str,required = False,
