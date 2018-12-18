@@ -27,6 +27,13 @@ Python and Python packages
 4. [pairtools](https://github.com/mirnylab/pairtools)
 5. [numpy](https://www.scipy.org/install.html), [scipy](https://www.scipy.org/install.html), [pandas](https://pandas.pydata.org/), [sklearn](https://scikit-learn.org/stable/install.html), [multiprocessing](https://pypi.org/project/multiprocess/)
 
+
+Java and related tools (Optional: required when want to process Hi-C data with juicer tools)
+
+1. [Juicer tools] (https://github.com/aidenlab/juicer/wiki/Download) 
+2. [Java (version >= 1.7)] (https://www.java.com/en/download/)
+
+
 Other dependencies
 
 1. [samtools](http://www.htslib.org/doc/) (1.3.1+)
