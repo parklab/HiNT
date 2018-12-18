@@ -30,8 +30,8 @@ Python and Python packages
 
 Java and related tools (Optional: required when want to process Hi-C data with juicer tools)
 
-1. [Juicer tools] (https://github.com/aidenlab/juicer/wiki/Download) 
-2. [Java (version >= 1.7)] (https://www.java.com/en/download/)
+1. [Juicer tools](https://github.com/aidenlab/juicer/wiki/Download) 
+2. [Java (version >= 1.7)](https://www.java.com/en/download/)
 
 
 Other dependencies
