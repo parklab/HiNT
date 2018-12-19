@@ -13,10 +13,11 @@
 R and R packages
 
 1. [R >= 3.4](https://www.r-project.org/)
-2. [strucchange](https://cran.r-project.org/web/packages/strucchange/index.html) 
-3. [parallel](https://www.rdocumentation.org/packages/parallel/versions/3.4.1)
-4. [Cairo](https://cran.r-project.org/web/packages/Cairo/index.html)
-5. [optparse](https://cran.r-project.org/web/packages/optparse/index.html)
+2. [mgcv](https://cran.r-project.org/web/packages/mgcv/index.html)
+3. [strucchange](https://cran.r-project.org/web/packages/strucchange/index.html) 
+4. [parallel](https://www.rdocumentation.org/packages/parallel/versions/3.4.1)
+5. [Cairo](https://cran.r-project.org/web/packages/Cairo/index.html)
+6. [optparse](https://cran.r-project.org/web/packages/optparse/index.html)
 
 
 Python and Python packages
@@ -38,11 +39,18 @@ Java and related tools (Optional: required when want to process Hi-C data with j
 Other dependencies
 
 1. [samtools](http://www.htslib.org/doc/) (1.3.1+)
+2. [BIC-seq2](http://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2/BICseq2-seg_v0.7.3.tar.gz) (0.7.3) ! This is optional: if you don't want to run HiNT-CNV, you don't need this package
 
 
-### Install
-```$ python setup.py install ```
 
+### Install HiNT
+1. Download HiNT ```git clone https://github.com/parklab/HiNT.git```
+	
+2. Download HiNT references [HERE](https://www.dropbox.com/sh/qas48d7409t2syz/AACk5G2ngZ0vylLXsLFZXif_a?dl=0). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
+	
+3. Put reference files into the HiNT directory ```$ mv hg19/* where_you_put_HiNT/HiNT/HiNT/references/```
+
+4. Installation ```$ python setup.py install ```
 
 ## Quick Start
 ### HiNT-PRE
@@ -67,7 +75,7 @@ see details and more options
 HiNT transl: interchromosomal translocations and breakpoints detection from
 Hi-C inter-chromosomal interaction matrices.
 
-```hint transl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir```
+```$ hint transl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir```
 
 see details and more options
 
@@ -89,7 +97,7 @@ In the HiNT-CNV output directory, you will find
 
 1. ```jobname_GAMPoisson.pdf``` the GAM regression result
 2. ```segmentation/jobname_bicsq_allchroms.txt``` CNV segments with log2 copy ratio and p-values in txt file
-3. ```segmentation/jobname_resolution_CNV_l03.png``` figure to visualize CNV segments
+3. ```segmentation/jobname_resolution_CNV_segments.png``` figure to visualize CNV segments
 4. ```segmentation/jobname_bicseq_allchroms.l2r.pdf``` figure to visualize log2 copy ration in each bin (bin size = resolution you set)
 5. ```segmentation/other_files``` intermediate files used to run BIC-seq
 6. ```jonname_dataForRegression/*``` data used for regression as well as residuals after removing Hi-C biases

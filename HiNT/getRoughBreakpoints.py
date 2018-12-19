@@ -15,6 +15,13 @@ def getDivisionMatrix(mat1,mat2,fname):
 	np.savetxt(fname,divisionMatrix,fmt="%.3f",delimiter='\t')
 	return
 
+def runBPcaller(params):
+	RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile = params
+	command = "Rscript %s %s %s"%(RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile)
+	chrompair_bps = open(tempbpoutputfile).readlines()
+	os.remove(tempbpoutputfile)
+	return chrompair_bps
+
 def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller):
 	DivisionMatrixInfo = {}
 	outputsubdir = os.path.join(outdir,"AdjustedMatrixFiles100kb")
@@ -37,8 +44,21 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 				pass
 	#print DivisionMatrixInfo
 	bpoutputfile = os.path.join(outdir,name + '_roughBP_100kb.txt')
-	command = "Rscript %s %s %s"%(RscriptBPcaller,outputsubdir,bpoutputfile)
-	print command
+	matrixfiles = os.listdir(outputsubdir)
+	allparamsInfo = []
+	for matrixfile in matrixfiles:
+		matrixfile = matrixfile.split('_')
+		chrompair = '_'.join(matrixfile[1:3])
+		#matrixfilepath = os.path.join(outputsubdir,matrixfile)
+		tempbpoutputfile = os.path.join(outdir,name + '_roughBP_100kb.txt')
+		allparamsInfo.append([RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile])
+
+	pool = Pool(8)
+	with open(bpoutputfile,'w') as outf:
+		for res in pool.imap(runBPcaller,allparamsInfo)
+			if res != False:
+				outf.write(res)
+
 	'''
 	run_cmd(command)
 	'''
@@ -74,6 +94,59 @@ def readBPs(breakpointsf,chromSizeInfo):
 			else:
 				bpInfo[chrom] = [(chr1,bprow,maxrow),(chr2,bpcol,maxcol)]
 	return bpInfo
+
+def mergeValidBPs(validBPs,matrixfile):
+	matrix = np.loadtxt(matrixfile)
+	rowsum = np.nansum(matrix,axis=1)
+	colsum = np.nansum(matrix,axis=0)
+
+	tempBPs = []
+	for validbp in validBPs:
+		if validbp not in tempBPs:
+			tempBPs.append(validbp)
+		else:
+			pass
+	bppairs = [(i[1],i[3]) for i in tempBPs]
+	chrompair = list(set([(i[0],i[2]) for i in tempBPs]))
+	if len(chrompair) != 1:
+		print chrompair
+
+	print tempBPs,chrompair
+
+	bppairs.sort()
+	bp1s = [int(i[0]) for i in bppairs]
+	bp2s = [int(i[1]) for i in bppairs]
+
+	differences1 = ['NA']+[(bp1s[i+1]-bp1s[i]) for i in range(len(bp1s)-1)]
+	differences2 = ['NA']+[(bp2s[i+1]-bp2s[i]) for i in range(len(bp2s)-1)]
+
+	print differences1,differences2
+	tempMerged = [i for i in bppairs]
+	print tempMerged
+	for j in range(1,len(differences1)):
+		if differences1[j] == 0 and differences2[j] == 1:
+			#print colsum[bp2s[j-1]],colsum[bp2s[j]]
+			if colsum[bp2s[j-1]] > colsum[bp2s[j]]:
+				tempMerged.remove(bppairs[j])
+			else:
+				tempMerged.remove(bppairs[j-1])
+		elif differences1[j] == 1 and differences2[j] == 0:
+			#print rowsum[bp2s[j-1]] > rowsum[bp2s[j]]
+			if rowsum[bp2s[j-1]] > rowsum[bp2s[j]]:
+				tempMerged.remove(bppairs[j])
+			else:
+				tempMerged.remove(bppairs[j-1])
+		else:
+			pass
+
+	print tempMerged
+
+	mergedValidBPs = []
+	for bp in tempMerged:
+		allinfo = [chrompair[0][0],str(bp[0]),chrompair[0][1],str(bp[1])]
+		mergedValidBPs.append(allinfo)
+
+	return mergedValidBPs
 
 def mergeBPs(bps,matrix,axis,windowsize=5):
 	bps = [int(i)-1 for i in bps] #python index starts with 0
@@ -113,124 +186,224 @@ def mergeBPs(bps,matrix,axis,windowsize=5):
 	return mergedbps
 
 def relativefold(a,b):
-	rfold = (float(a) - float(b))/float(b)
+	if float(b) != 0:
+		rfold = (float(a) - float(b))/float(b)
+	else:
+		rfold = (float(a) - float(b))/(float(b)+1)
 	return rfold
 
 def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 	matrix = np.loadtxt(matrixfile)
 	rowsum = np.nansum(matrix,axis=1)
+	#print np.shape(rowsum)
 	colsum = np.nansum(matrix,axis=0)
+	#print np.shape(colsum)
 	chrom1Info,chrom2Info = bps
 	chr1,bp1,max1 = chrom1Info
 	chr2,bp2,max2 = chrom2Info
 	bp1 = bp1.split(',')
 	bp2 = bp2.split(',')
+
 	bp1s = bp1
 	bp2s = bp2
 	bp1s = list(set(bp1s))
 	bp2s = list(set(bp2s))
+
 	#print bp1s,bp2s
 	mergedbp1s = mergeBPs(bp1s,matrix,'row')
-	#print mergedbp1s
+	print mergedbp1s
 	if str(int(max1)-1) not in mergedbp1s:
 		mergedbp1s = mergedbp1s + [str(int(max1)-1)]
+
 	mergedbp2s = mergeBPs(bp2s,matrix,'column')
-	#print mergedbp2s
+	print mergedbp2s
 
 	if str(int(max2)-1) not in mergedbp2s:
 		mergedbp2s = mergedbp2s + [str(int(max2)-1)]
-	#print mergedbp1s,mergedbp2s
+
+	print mergedbp1s,mergedbp2s
 
 	validBPs = []
 	binsize1 = chromSizeInfo[chr1]
 	binsize2 = chromSizeInfo[chr2]
+
 	cutoff = np.nanpercentile(matrix,99)
-	if cutoff == 0:
-		pass
-	else:
-		for bp1 in mergedbp1s:
-			for bp2 in mergedbp2s:
-				#print bp1,bp2
-				if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
-					x1 = int(bp1)-windowsize+1
-					x2 = int(bp1)+1
-				else:
-					x1 = int(bp1)-windowsize
-					x2 = int(bp1)
-				if colsum[int(bp2)] > colsum[int(bp2)+1]:
-					y1 = int(bp2)-windowsize+1
-					y2 = int(bp2)+1
-				else:
-					y1 = int(bp2)-windowsize
-					y2 = int(bp2)
+	#print "cutoff:", cutoff
+
+	for bp1 in mergedbp1s:
+		for bp2 in mergedbp2s:
+			sm1 = np.nanmedian(matrix[int(bp1)-5:int(bp1),int(bp2)+1:int(bp2)+6])
+			sm2 = np.nanmedian(matrix[int(bp1)+1:int(bp1)+6,int(bp2)+1:int(bp2)+6])
+			sm3 = np.nanmedian(matrix[int(bp1)-5:int(bp1),int(bp2)-5:int(bp2)])
+			sm4 = np.nanmedian(matrix[int(bp1)+1:int(bp1)+6,int(bp2)-5:int(bp2)])
+			print sm1,sm2,sm3,sm4
+			sms = np.sort(np.asarray([sm1,sm2,sm3,sm4]))
+			translocationType = "unbalanced"
+			if sms[2] > min(np.nanpercentile(matrix,80),2) and sms[1] < max(np.nanpercentile(matrix,60),1.5):
+				translocationType = "balanced"
+			print translocationType
+
+			if translocationType == "NULL":
+				continue
+			else:
+
+				if translocationType == "balanced":
+					if sm3 > sm4: #bp1 belongs to the left
+					#if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
+						x1 = int(bp1)-windowsize+1
+						x2 = int(bp1)+1
+					else:
+						x1 = int(bp1)-windowsize
+						x2 = int(bp1)
+				if translocationType == "unbalanced":
+					if np.nanmean(rowsum[int(bp1)-5:int(bp1)]) > np.nanmean(rowsum[int(bp1)+1:int(bp1)+6]):
+						x1 = int(bp1)-windowsize+1
+						x2 = int(bp1)+1
+					else:
+						x1 = int(bp1)-windowsize
+						x2 = int(bp1)
+
+				if translocationType == "balanced":
+					if sm3 > sm1:
+						#if colsum[int(bp2)] > colsum[int(bp2)+1]:
+						y1 = int(bp2)-windowsize+1
+						y2 = int(bp2)+1
+					else:
+						y1 = int(bp2)-windowsize
+						y2 = int(bp2)
+
+				if translocationType == "unbalanced":
+					if np.nanmean(colsum[int(bp2)-5:int(bp2)]) > np.nanmean(colsum[int(bp2)+1:int(bp2)+6]):
+						y1 = int(bp2)-windowsize+1
+						y2 = int(bp2)+1
+					else:
+						y1 = int(bp2)-windowsize
+						y2 = int(bp2)
+
 				if x1 < 0:
 					x1 = 0
 				if y1 < 0:
 					y1 = 0
-				#print x1,x2,y1,y2
+				print x1,x2,y1,y2
 				r1 = matrix[x1:x2,y1:y2]
 				mr1 = np.nanmean(r1)
-				if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
-					x1 = int(bp1)+1
-					x2 = int(bp1)+1+windowsize
-				else:
-					x1 = int(bp1)
-					x2 = int(bp1)+windowsize
-				if colsum[int(bp2)] > colsum[int(bp2)+1]:
-					y1 = int(bp2)+1
-					y2 = int(bp2)+1+windowsize
-				else:
-					y1 = int(bp2)
-					y2 = int(bp2)+windowsize
+
+				if translocationType == "balanced":
+					if sm1 > sm2:
+						x1 = int(bp1)+1
+						x2 = int(bp1)+1+windowsize
+					else:
+						x1 = int(bp1)
+						x2 = int(bp1)+windowsize
+				if translocationType == "unbalanced":
+					if np.nanmean(rowsum[int(bp1)-5:int(bp1)]) > np.nanmean(rowsum[int(bp1)+1:int(bp1)+6]):
+						x1 = int(bp1)+1
+						x2 = int(bp1)+1+windowsize
+					else:
+						x1 = int(bp1)
+						x2 = int(bp1)+windowsize
+				if translocationType == "balanced":
+					if sm4 > sm2:
+						y1 = int(bp2)+1
+						y2 = int(bp2)+1+windowsize
+					else:
+						y1 = int(bp2)
+						y2 = int(bp2)+windowsize
+				if translocationType == "unbalanced":
+					if np.nanmean(colsum[int(bp2)-5:int(bp2)]) > np.nanmean(colsum[int(bp2)+1:int(bp2)+6]):
+						y1 = int(bp2)+1
+						y2 = int(bp2)+1+windowsize
+					else:
+						y1 = int(bp2)
+						y2 = int(bp2)+windowsize
 				if x2 >= binsize1:
 					x2 = binsize1
 				if y2 >= binsize2:
 					y1 = binsize2
-				#print x1,x2,y1,y2
+				print x1,x2,y1,y2
 				r2 = matrix[x1:x2,y1:y2]
 				mr2 = np.nanmean(r2)
-				if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
-					x1 = int(bp1)-windowsize+1
-					x2 = int(bp1)+1
-				else:
-					x1 = int(bp1)-windowsize
-					x2 = int(bp1)
-				if colsum[int(bp2)] > colsum[int(bp2)+1]:
-					y1 = int(bp2)+1
-					y2 = int(bp2)+1+windowsize
-				else:
-					y1 = int(bp2)
-					y2 = int(bp2)+windowsize
+
+				if translocationType == "balanced":
+					if sm1 > sm2:
+						x1 = int(bp1)-windowsize+1
+						x2 = int(bp1)+1
+					else:
+						x1 = int(bp1)-windowsize
+						x2 = int(bp1)
+				if translocationType == "unbalanced":
+					if np.nanmean(rowsum[int(bp1)-5:int(bp1)]) > np.nanmean(rowsum[int(bp1)+1:int(bp1)+6]):
+						x1 = int(bp1)-windowsize+1
+						x2 = int(bp1)+1
+					else:
+						x1 = int(bp1)-windowsize
+						x2 = int(bp1)
+				if translocationType == "balanced":
+					if sm3 > sm1:
+						y1 = int(bp2)+1
+						y2 = int(bp2)+1+windowsize
+					else:
+						y1 = int(bp2)
+						y2 = int(bp2)+windowsize
+				if translocationType == "unbalanced":
+					if np.nanmean(colsum[int(bp2)-5:int(bp2)]) > np.nanmean(colsum[int(bp2)+1:int(bp2)+6]):
+						y1 = int(bp2)+1
+						y2 = int(bp2)+1+windowsize
+					else:
+						y1 = int(bp2)
+						y2 = int(bp2)+windowsize
 				if x1 < 0:
 					x1 = 0
 				if y2 > binsize2:
 					y1 = binsize2
-				#print x1,x2,y1,y2
+				print x1,x2,y1,y2
 				r3 = matrix[x1:x2,y1:y2]
+				mr3 = np.nanpercentile(r3,80,interpolation="lower")
 				mr3 = np.nanmean(r3)
-				if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
-					x1 = int(bp1)+1
-					x2 = int(bp1)+1+windowsize
-				else:
-					x1 = int(bp1)
-					x2 = int(bp1)+windowsize
-				if colsum[int(bp2)] > colsum[int(bp2)+1]:
-					y1 = int(bp2)-windowsize+1
-					y2 = int(bp2)+1
-				else:
-					y1 = int(bp2)-windowsize
-					y2 = int(bp2)
+
+				if translocationType == "balanced":
+					if sm3 > sm4:
+						x1 = int(bp1)+1
+						x2 = int(bp1)+1+windowsize
+					else:
+						x1 = int(bp1)
+						x2 = int(bp1)+windowsize
+				if translocationType == "unbalanced":
+					if np.nanmean(rowsum[int(bp1)-5:int(bp1)]) > np.nanmean(rowsum[int(bp1)+1:int(bp1)+6]):
+						x1 = int(bp1)+1
+						x2 = int(bp1)+1+windowsize
+					else:
+						x1 = int(bp1)
+						x2 = int(bp1)+windowsize
+				if translocationType == "balanced":
+					if sm4 > sm2:
+						y1 = int(bp2)-windowsize+1
+						y2 = int(bp2)+1
+					else:
+						y1 = int(bp2)-windowsize
+						y2 = int(bp2)
+				if translocationType == "unbalanced":
+					if np.nanmean(colsum[int(bp2)-5:int(bp2)]) > np.nanmean(colsum[int(bp2)+1:int(bp2)+6]):
+						y1 = int(bp2)-windowsize+1
+						y2 = int(bp2)+1
+					else:
+						y1 = int(bp2)-windowsize
+						y2 = int(bp2)
+
 				if x2 >= binsize1:
 					x2 = binsize1
 				if y1 < 0:
 					y1 = 0
-				#print x1,x2,y1,y2
+				print x1,x2,y1,y2
 				r4 = matrix[x1:x2,y1:y2]
+				#print(np.shape(r4))
+				mr4 = np.nanpercentile(r4,80,interpolation="lower")
 				mr4 = np.nanmean(r4)
 				###   mr1 | mr3
 				###   ----|-----
 				###   mr4 | mr2
-				#print mr1,mr2,mr3,mr4
+
+				print mr1,mr2,mr3,mr4,cutoff
 				count = 0
 				mrs = [mr1,mr2,mr3,mr4]
 				for mr in mrs:
@@ -239,25 +412,33 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 					else:
 						if mr > cutoff:
 							count += 1
-				#print count
+				print count
+
 				if count == 0:
 					pass
 				elif count >= 3:
 					pass
-				elif count == 2:
+				elif count == 2: #balanced translocation, need a submatrix to calculate the rowsums and colsums
 					mrs.sort()
 					if (mr1 > cutoff and mr2 > cutoff) or (mr3> cutoff and mr4 > cutoff):
 						rfold1 = relativefold(mrs[-2],mrs[-3])
+						#print rfold1
 						if rfold1 > 5:
 							#print 'TRUE',bp1,bp2
-							if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
+							submatrix = matrix[:,0:int(bp2)]
+							subrowsum = np.nansum(submatrix,1)
+							submatrix = matrix[0:int(bp1),:]
+							subcolsum = np.nansum(submatrix,0)
+
+							if subrowsum[int(bp1)] > subrowsum[int(bp1)+1]:
 								correctbp1 = bp1
 							else:
 								correctbp1 = str(int(bp1)+1)
-							if colsum[int(bp2)] > colsum[int(bp2)+1]:
+							if subcolsum[int(bp2)] > subcolsum[int(bp2)+1]:
 								correctbp2 = bp2
 							else:
 								correctbp2 = str(int(bp2)+1)
+
 							validBPs.append([chr1,str(int(correctbp1)+1),chr2,str(int(correctbp2)+1)])
 					else:
 						pass
@@ -275,6 +456,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 						rfold2 = relativefold(sortedmrs[-1],cutoff)
 						#print 'rfold2: ', rfold2
 						rfold1 = 1
+
 					if rfold1 > 5 or rfold2 > 2:
 						#print 'TRUE',bp1,bp2
 						if rowsum[int(bp1)] > rowsum[int(bp1)+1]:
@@ -302,7 +484,11 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 			bps = bpInfo[chrompair]
 			matrixfile = DivisionMatrixInfo[chrompair]
 			validBPs = filtering(bps,matrixfile,chromSizeInfo,windowsize)
-			for validbp in validBPs:
+			if len(validBPs) == 1:
+				mergedValidBPs = validBPs
+			else:
+				mergedValidBPs = mergeValidBPs(validBPs,matrixfile)
+			for validbp in mergedValidBPs:
 				res = [chrompair] + validbp
 				outf.write('\t'.join(res) + '\n')
 		else:

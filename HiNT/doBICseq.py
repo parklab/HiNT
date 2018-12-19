@@ -65,7 +65,7 @@ def run_BICseq(name,outdir,resolution,resiudalChromFilesInfo,chroms,BICseqpath,C
 	tmp = os.path.join(subDir,'tmp')
 	if not os.path.isdir(tmp):
 		os.mkdir(tmp)
-	outfig = os.path.join(subDir,name + '_%skb_CNV_l03.png'%str(resolution))
+	outfig = os.path.join(subDir,name + '_%skb_CNV_segments.png'%str(resolution))
 	command = 'perl %s %s %s --tmp %s --title %s_%skb_CNV --bootstrap --fig %s --lambda 3'%(BICseqpath,outputconfigfile,bicseqOut,tmp,name,str(resolution),outfig)
 	print command
 	run_cmd(command)

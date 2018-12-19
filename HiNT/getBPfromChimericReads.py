@@ -187,7 +187,7 @@ def getReads(bpInfo,chromSizeInfo,chimericReadPairs,outdir,outname,windowsize=5,
 	output = os.path.join(outdir,outname + '.supportedReads.txt')
 	outf = open(output,'w')
 	output3 = os.path.join(outdir,outname + '.singleValidated_pairs_BPs.txt')
-	outp3 = open(output3,'w')
+	outf3 = open(output3,'w')
 	resolution = 100000
 	for chrompair in bpInfo:
 		print chrompair
@@ -241,17 +241,17 @@ def getReads(bpInfo,chromSizeInfo,chimericReadPairs,outdir,outname,windowsize=5,
 					if cp not in chrompair_res1:
 						chrompair_res1.append(cp)
 						res = [chrom1Info[0],reg_a,str(pos_a),chrom2Info[0],reg_b,str(pos_b)] + [str(hit_forward),str(hit_reverse),str(hit_all)]
-						outp3.write('\t'.join(res)+"\n")
+						outf3.write('\t'.join(res)+"\n")
 					else:
 						pass
 		for sr in supportedReads:
 			outf.write('\t'.join(sr) + '\n')
 
-	outp3.close()
+	outf3.close()
 	outf.close()
 	return output3
 
-def getBPfromChimeras(chimericPairsam,restrictionSites,outdir,name,chromlengthf,validbreakpointsf):
+def getBPfromChimeras(chimericPairsam,restrictionSites,outdir,name,chromlengthf,validbreakpointsf,pairixpath):
 	chimericDir = os.path.join(outdir,'BPfromChimeric')
 	if not os.path.isdir(chimericDir):
 		os.mkdir(chimericDir)
@@ -270,7 +270,7 @@ def getBPfromChimeras(chimericPairsam,restrictionSites,outdir,name,chromlengthf,
 	command1 = "sort -k2,2 -k5,5 -k3,3n -k 6,6n %s | bgzip -c > %s"%(outputChimeraPairs,sortedChimeras)
 	print(command1)
 	run_cmd(command1)
-	command2 = "pairix -f -s2 -d5 -b3 -e4 -u6 -v7 %s"%sortedChimeras
+	command2 = "%s -f -s2 -d5 -b3 -e4 -u6 -v7 %s"(%pairixpath,%sortedChimeras)
 	print command2
 	run_cmd(command2)
 	chromInfo = getchromsize(chromlengthf)
