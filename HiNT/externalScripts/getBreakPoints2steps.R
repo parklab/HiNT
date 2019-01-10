@@ -3,7 +3,6 @@ print(Args)
 divisionMatrixDir = Args[6]
 matrix = Args[7]
 outputfile = Args[8]
-threads = 4
 
 #start_time <- Sys.time()
 

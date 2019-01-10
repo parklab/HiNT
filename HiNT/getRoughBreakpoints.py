@@ -18,6 +18,7 @@ def getDivisionMatrix(mat1,mat2,fname):
 def runBPcaller(params):
 	RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile = params
 	command = "Rscript %s %s %s"%(RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile)
+	run_cmd(command)
 	chrompair_bps = open(tempbpoutputfile).readlines()
 	os.remove(tempbpoutputfile)
 	return chrompair_bps
@@ -36,9 +37,7 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 				mat1 = matrix100kbInfo[chrompair]
 				mat2 = background100kbInfo[chrompair]
 				fname = os.path.join(outputsubdir,name + '_' + chrompair + '_DivisionMatrix.txt')
-				'''
 				getDivisionMatrix(mat1,mat2,fname)
-				'''
 				DivisionMatrixInfo[chrompair] = fname
 			else:
 				pass
@@ -49,23 +48,29 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 	for matrixfile in matrixfiles:
 		matrixfile = matrixfile.split('_')
 		chrompair = '_'.join(matrixfile[1:3])
-		#matrixfilepath = os.path.join(outputsubdir,matrixfile)
 		tempbpoutputfile = os.path.join(outdir,name + '_roughBP_100kb.txt')
 		allparamsInfo.append([RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile])
 
-	pool = Pool(8)
-	with open(bpoutputfile,'w') as outf:
-		for res in pool.imap(runBPcaller,allparamsInfo)
-			if res != False:
-				outf.write(res)
+	results = []
+	p = Pool(8)
+	result = p.map_async(runBPcaller, allparamsInfo, callback=results.append)
+	p.close()
+	p.join()
 
-	'''
-	run_cmd(command)
-	'''
+	with open(bpoutputfile,'w') as outf:
+		for line in results:
+			if line != False:
+				outf.write(line)
+
+	#with open(bpoutputfile,'w') as outf:
+	#	for res in pool.imap(runBPcaller,allparamsInfo)
+	#		if res != False:
+	#			outf.write(res)
+
 	return bpoutputfile,DivisionMatrixInfo
 
-################################################################################
-#############     below are doing the breakpoints filtering   ##################
+##################################################################################################
+##############    scripts below this line are doing the breakpoints filtering   ##################
 
 def getchromsize(chromlengthf,resolution):
 	chromSizeInfo = {}

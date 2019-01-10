@@ -115,7 +115,7 @@ def translrun(args):
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)
     rpoutfile = getRankProduct(matrix1MbInfo,background1MbInfo,opts.outdir,opts.name)
     rpInfo = getRPinfo(rpoutfile)
-    RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints.R')
+    RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
     validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath)
     if not opts.chimeric:
         Info("Done! Find your translocation breakpoints file from %s. ;)"%validBPregionOutf)
