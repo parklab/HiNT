@@ -71,14 +71,18 @@ def getmappability(mappablity_track, matrixchrom, matrixstart, matrixend, resolu
 			tempcount += v
 	return binvalues
 
-def getFragmentsNumber(restrictionSites, matrixchrom, resolution,chromlength):
+def getRestrictionSitesInfo(restrictionSites):
 	inf = open(restrictionSites)
 	sitesInfo = {}
 	for line in inf:
-		line = line.strip().split('\t')
-		chrom,sites = line
+		line = line.strip().split()
+		chrom = line[0]
+		sites = line[1:]
 		sitesInfo[chrom] = sites
-	sites = sitesInfo[matrixchrom].strip().split()
+	return sitesInfo
+
+def getFragmentsNumber(sitesInfo, matrixchrom, resolution,chromlength):
+	sites = sitesInfo[matrixchrom]
 	bincounts = [0.0] * (int(chromlength)/int(resolution) + 1)
 	for site in sites:
 		idx = int(site) / int(resolution)
@@ -149,7 +153,7 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 	else:
 		os.mkdir(suboutdir)
 		outputname = os.path.join(suboutdir,"regressionInfo")
-
+	sitesInfo = getRestrictionSitesInfo(restrictionSites)
 	for chrom in chromInfo:
 		if chrom not in rowSumFilesInfo or chrom == 'chrY':
 			pass
@@ -162,7 +166,7 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 			#print filesName
 			resolution = int(binsize)*1000
 			mapscore = getmappability(mappablity_track, chrom, 1, chromLength, resolution)
-			fragmentCounts = getFragmentsNumber(restrictionSites, chrom, resolution, chromLength)
+			fragmentCounts = getFragmentsNumber(sitesInfo, chrom, resolution, chromLength)
 			gc = getGCpercent(hg19_1k_GCPercent,chrom,resolution)
 			outputfilename = outputname + '_%s_'%chrom
 			outRegressionfile = Regression(rowsums, mapscore, gc, fragmentCounts, outputfilename, filesName)
