@@ -5,9 +5,9 @@ import numpy as np
 import pypairix
 from HiNT.corelib import *
 
-def extrac_nonHiCchimeric(chimericPairsam,restrictionSites,outputPrefix):
+def extrac_nonHiCchimeric(chimericPairsam,restrictionSites,restrictionEnzyme,outputPrefix):
 	extractionScript = resource_filename('HiNT', 'externalScripts/extract_nonHiC.pl')
-	command = "perl %s -psam %s -sites %s -output_file %s"%(extractionScript, chimericPairsam, restrictionSites, outputPrefix)
+	command = "perl %s -psam %s -sites %s -re %s -outprefix %s"%(extractionScript, chimericPairsam, restrictionSites, restrictionEnzyme, outputPrefix)
 	run_cmd(command)
 	outputChimeras = outputPrefix+'_3dedup.txt'
 	return outputChimeras
@@ -251,12 +251,12 @@ def getReads(bpInfo,chromSizeInfo,chimericReadPairs,outdir,outname,windowsize=5,
 	outf.close()
 	return output3
 
-def getBPfromChimeras(chimericPairsam,restrictionSites,outdir,name,chromlengthf,validbreakpointsf,pairixpath):
+def getBPfromChimeras(chimericPairsam,restrictionSites,restrictionEnzyme,outdir,name,chromlengthf,validbreakpointsf,pairixpath):
 	chimericDir = os.path.join(outdir,'BPfromChimeric')
 	if not os.path.isdir(chimericDir):
 		os.mkdir(chimericDir)
 	chimerasPrefix = os.path.join(chimericDir,name+'_nonHiC_chimeric')
-	outputChimeras = extrac_nonHiCchimeric(chimericPairsam,restrictionSites,chimerasPrefix)
+	outputChimeras = extrac_nonHiCchimeric(chimericPairsam,restrictionSites,restrictionEnzyme,chimerasPrefix)
 	inf = open(outputChimeras).xreadlines()
 	Infos = []
 	outputChimeraPairs = os.path.join(chimericDir,name+'_nonHiC_chimeric_3dedup.pairs')

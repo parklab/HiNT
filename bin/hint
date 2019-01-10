@@ -142,6 +142,8 @@ def add_translocation_parser(subparsers):
     tranlparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
                          help="The matrix compressed file contains 1Mb and 100kb resolutions Hi-C contact matrix (.hic format), or 1Mb and 100kb resolution files seperate with ',', like /path/to/data_1Mb.cool,/path/to/data_100kb.cool\n\
                          or the directory that contain Hi-C interaction matrix in sparse or dense matrix format, interchromosomal interaction matrices only. Absolute path is required")
+    tranlparser.add_argument("-e","--enzyme",dest="enzyme",type=str,required = False, choices = ("DpnII","MboI","HindIII"), default="MboI",
+                         help="Enzyme used in Hi-C experiment, DEFAULT: MboI")
     tranlparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer","sparse","dense"), default="cooler",
                          help="Format for the output contact matrix, DEFAULT: cooler")
     tranlparser.add_argument("--ppath",dest="pairixpath",type=str,required = True,

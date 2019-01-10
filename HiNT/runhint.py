@@ -122,8 +122,8 @@ def translrun(args):
     else:
         from HiNT.getBPfromChimericReads import *
         from HiNT.BPsummarization import *
-        restrictionSites = resource_filename('HiNT', 'references/%s_%s.txt'%(opts.genome,opts.enzyme)) #This may need to be modified according to Dhawal's script
-        BP_fromChimerasfile = getBPfromChimeras(opts.chimeric,restrictionSites,opts.outdir,opts.name,chromlengthf,validBPregionOutf,opts.pairixpath)
+        restrictionSites = resource_filename('HiNT', 'references/%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme)) #This may need to be modified according to Dhawal's script
+        BP_fromChimerasfile = getBPfromChimeras(opts.chimeric,restrictionSites,opts.enzyme,opts.outdir,opts.name,chromlengthf,validBPregionOutf,opts.pairixpath)
         IntegratedBPf = getSummarizedBP(BP_fromChimerasfile,opts.outdir,opts.name,rpoutfile,validBPregionOutf)
         Info("Done! Find your translocation summarized breakpoints file from %s. ;)"%IntegratedBPf)
     return True
