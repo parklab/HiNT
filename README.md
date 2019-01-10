@@ -34,6 +34,9 @@ Java and related tools (Optional: required when want to process Hi-C data with j
 1. [Java (version >= 1.7)](https://www.java.com/en/download/)
 2. [Juicer tools](https://github.com/aidenlab/juicer/wiki/Download) 
 
+Perl
+
+1. [Perl (version >= 5)](https://www.perl.org/)
 
 
 Other dependencies
