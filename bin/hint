@@ -135,9 +135,9 @@ def add_translocation_parser(subparsers):
     """
     Add HiNT for interchromosomal translocations detection argument parsers.
     """
-    tranlparser = subparsers.add_parser("transl", help="Identify translocated chromosomal pairs, and detect the breakpoints in 100kb as well as 1bp resolution",
-                                        description="HiNT-transl: interchromosomal translocations and breakpoints detection from Hi-C inter-chromosomal interaction matrices.\n\
-                                        EXAMPLE: hint transl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir")
+    tranlparser = subparsers.add_parser("tl", help="Identify translocated chromosomal pairs, and detect the breakpoints in 100kb as well as 1bp resolution",
+                                        description="HiNT-tl: interchromosomal translocations and breakpoints detection from Hi-C inter-chromosomal interaction matrices.\n\
+                                        EXAMPLE: hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir")
     #Main Arguments
     tranlparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
                          help="The matrix compressed file contains 1Mb and 100kb resolutions Hi-C contact matrix (.hic format), or 1Mb and 100kb resolution files seperate with ',', like /path/to/data_1Mb.cool,/path/to/data_100kb.cool\n\
@@ -177,7 +177,7 @@ def main():
     if subcommand == "cnv":
         from HiNT.runhint import cnvrun
         cnvrun(argparser)
-    if subcommand == "transl":
+    if subcommand == "tl":
         from HiNT.runhint import translrun
         translrun(argparser)
 
