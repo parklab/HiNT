@@ -81,10 +81,10 @@ def cnvrun(args):
     #    from HiNT.getGenomeRowSumsFromSparse import *
 
     binsize = opts.resolution
-    GCPercent_1kb = resource_filename('HiNT', 'references/%s_1k_GCPercent.bed'%%opts.genome)
+    GCPercent_1kb = resource_filename('HiNT', 'references/%s_1k_GCPercent.bed'%opts.genome)
     mappablity_track = resource_filename('HiNT', 'references/%s_wgEncodeCrgMapabilityAlign50mer.bdg.gz'%opts.genome)
     mappablity_trackIndex = resource_filename('HiNT', 'references/%s_wgEncodeCrgMapabilityAlign50mer.bdg.gz.tbi'%opts.genome)
-    restrictionSites = resource_filename('HiNT', 'references/%s_%s_enzymeSites.txt'(%opts.genome,%opts.enzyme))
+    restrictionSites = resource_filename('HiNT', 'references/%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
     chroms,regressionFileAllchroms,regressionChromFilesInfo = prepareData(opts.name,opts.outdir,chromlf,rowSumFilesInfo,binsize,GCPercent_1kb,mappablity_track,restrictionSites) #Prepare the other data Information for regression
     print chroms
     resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome

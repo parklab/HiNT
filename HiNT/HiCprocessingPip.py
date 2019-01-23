@@ -6,7 +6,7 @@ from pkg_resources import resource_filename
 def runBWA(opts,dataInfo):
     fq1,fq2 = opts.hicdata
     outbam = os.path.join(opts.outdir, opts.name + '.bam')
-    command = '%s mem -SP5M -t 8 %s %s %s | %s view -Snb - > %s'%(opts.bwapath,opts.bwaIndex,fq1,fq2,opts.samtoolspath,outbam)
+    command = '%s mem -SP5M -t 8 %s %s %s | %s view -Shb - > %s'%(opts.bwapath,opts.bwaIndex,fq1,fq2,opts.samtoolspath,outbam)
     Info("Alignment with BWA-mem")
     print command
     run_cmd(command)
@@ -17,9 +17,9 @@ def runBWA(opts,dataInfo):
 
 def runpairsamtools(dataInfo,opts):
     inbam = dataInfo['bam']
-    chromsizef = resource_filename('HiNT', 'references/hg19.len')
+    chromsizef = resource_filename('HiNT', 'references/%s.len'%opts.genome)
     outpairsam = os.path.join(opts.outdir,opts.name + '.pairsam.gz')
-    command = '%s view -h %s | %s parse -c %s -o %s --assembly hg19'%(opts.samtoolspath,inbam,opts.pairsampath,chromsizef,outpairsam)
+    command = '%s view -h %s | %s parse -c %s -o %s --assembly %s'%(opts.samtoolspath,inbam,opts.pairsampath,chromsizef,outpairsam,opts.genome)
     print(command)
     run_cmd(command)
     dataInfo['pairsam']=outpairsam
@@ -27,7 +27,7 @@ def runpairsamtools(dataInfo,opts):
     return dataInfo
 
 def sortpairsam(dataInfo,opts):
-    chromsizef = resource_filename('HiNT', 'references/hg19.len')
+    chromsizef = resource_filename('HiNT', 'references/%s.len'%opts.genome)
     pairsamf = dataInfo['pairsam']
     sortedpairsam = pairsamf.rstrip('.pairsam.gz') + '.sorted.pairsam.gz'
     tmpdir = os.path.join(opts.outdir,'tmp')
@@ -81,7 +81,7 @@ def pairsIndex(dataInfo,opts):
 
 def runcooler(dataInfo,opts):
     pairsfile = dataInfo['bgzippedValidPairs']
-    chromsizef = resource_filename('HiNT', 'references/hg19.len')
+    chromsizef = resource_filename('HiNT', 'references/%.len'%opts.genome)
     if not opts.resolution:
         resolutions = [50,100,1000]
     else:
