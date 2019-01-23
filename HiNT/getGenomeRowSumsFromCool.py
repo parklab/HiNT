@@ -81,7 +81,8 @@ def calRowsums(params):
 		rowsums = np.reshape(rowsums,(len(rowsums),1))
 	genomeRowSum = RowSums + rowsums
 	writeGenomeRowSums(coolfile,genomeRowSum,targetchrom,outputname,name)
-
+	outInfo = [targetchrom,toutputname]
+	return outInfo
 def getallChromsRowSums(coolpath,name,outputdir,resolution):
 	chunksize=1000/int(resolution)
 	coolfile = cooler.Cooler(coolpath)
@@ -96,9 +97,11 @@ def getallChromsRowSums(coolpath,name,outputdir,resolution):
 		allparamsInfo.append([coolfile,binsInfo,targetchrom,outputname])
 		rowSumFilesInfo[targetchrom] = outputname
 
+	results = []
 	p = Pool(8)
-	result = p.map_async(calRowsums, allparamsInfo)
+	result = p.map_async(calRowsums, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()
-
+	print results
+	
 	return rowSumFilesInfo
