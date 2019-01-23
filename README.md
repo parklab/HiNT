@@ -23,9 +23,9 @@ R and R packages
 Python and Python packages
 
 1. [python >= 2.7](https://www.python.org/)
-2. [pyparix](https://github.com/4dn-dcic/pairix#pypairix)
-3. [cooler](https://github.com/mirnylab/cooler)
-4. [pairtools](https://github.com/mirnylab/pairtools)
+2. [pyparix >= 0.3.0](https://github.com/4dn-dcic/pairix#pypairix)
+3. [cooler >= 0.7.4](https://github.com/mirnylab/cooler)
+4. [pairtools >= 0.2.2](https://github.com/mirnylab/pairtools)
 5. [numpy](https://www.scipy.org/install.html), [scipy](https://www.scipy.org/install.html), [pandas](https://pandas.pydata.org/), [sklearn](https://scikit-learn.org/stable/install.html), [multiprocessing](https://pypi.org/project/multiprocess/)
 
 
