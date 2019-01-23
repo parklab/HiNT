@@ -73,7 +73,7 @@ def cnvrun(args):
     chromlf = resource_filename('HiNT', 'references/%s.len'%opts.genome)
     if opts.format == 'cooler':
         from HiNT.getGenomeRowSumsFromCool import *
-        rowSumFilesInfo = calRowsums(opts.matrixfile,opts.name,opts.outdir,opts.resolution) #Calculate rowsums
+        rowSumFilesInfo = getallChromsRowSums(opts.matrixfile,opts.name,opts.outdir,opts.resolution) #Calculate rowsums
     if opts.format == 'juicer':
         from HiNT.getGenomeRowSumsFromHiC import *
         rowSumFilesInfo = getGenomeRowSums(opts.resolution, opts.matrixfile, chromlf, opts.outdir,opts.name)

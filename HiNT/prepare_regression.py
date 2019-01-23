@@ -98,13 +98,13 @@ def Regression(rowsums, mappability,gc,fragmentCounts,outputfilename, filesName)
 	label = label.lstrip('#').strip()
 	outRegressionfile = outputfilename + '%s.txt'%label
 
-	print outRegressionfile
+	#print outRegressionfile
 	rowsum = np.asarray(matrix[:,0])
 	nrowdim = len(rowsum)
 	GC = np.asarray(gc[:nrowdim])
 	mapscore = np.asarray(mappability[:nrowdim])
 	fragmentscore = np.asarray(fragmentCounts[:nrowdim])
-	print len(rowsum),len(GC),len(mapscore),len(fragmentscore)
+	#print len(rowsum),len(GC),len(mapscore),len(fragmentscore)
 
 	d = {'rowsum':rowsum, 'gcper':GC, 'mapscore': mapscore,'cutSitesNumber':fragmentscore}
 	mydata = pd.DataFrame(d,columns=['cutSitesNumber','gcper','mapscore','rowsum'])
@@ -158,7 +158,7 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 		if chrom not in rowSumFilesInfo or chrom == 'chrY':
 			pass
 		else:
-			print chrom
+			#print chrom
 			chromLength = chromInfo[chrom]
 			file = rowSumFilesInfo[chrom]
 			rowsums = pd.read_csv(file, header = 0,sep="\t",index_col=0)

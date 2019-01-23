@@ -68,7 +68,7 @@ def getRankProduct(matrix1MbInfo,background1MbInfo,outdir,name):
     maximums = []
     chrompairs = []
     for chrompair in matrix1MbInfo:
-        print chrompair
+        #print chrompair
         matrix1 = matrix1MbInfo[chrompair]
         matrix2 = background1MbInfo[chrompair]
         giniIndex,maximum = getGini(matrix1,matrix2)

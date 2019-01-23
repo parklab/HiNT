@@ -35,7 +35,7 @@ HiNT for translocations detection
 
 This code is free software; you can redistribute it and/or modify it.
 
-@version: $1.0$
+@version: $2.0$
 @author: Su Wang
 @contact: wangsu0623@gmail.com
 """
@@ -52,7 +52,7 @@ def prepare_argparser():
     epilog = "For command line options of each command, type: %(prog)s COMMAND -h"
 
     argparser = ap.ArgumentParser( description = description, epilog = epilog) #, usage = usage
-    HiNT_VERSION = '1.0'
+    HiNT_VERSION = '2.0'
     argparser.add_argument("--version", action="version", version="%(prog)s " + HiNT_VERSION)
     subparsers = argparser.add_subparsers( help = "sub-command help", dest = 'subcommand_name' ) #help="sub-command help"
 

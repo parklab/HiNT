@@ -1,5 +1,6 @@
 import os,sys
 from HiNT.corelib import *
+from multiprocessing import Pool
 import numpy as np
 import math
 
@@ -116,7 +117,7 @@ def mergeValidBPs(validBPs,matrixfile):
 	if len(chrompair) != 1:
 		print chrompair
 
-	print tempBPs,chrompair
+	#print tempBPs,chrompair
 
 	bppairs.sort()
 	bp1s = [int(i[0]) for i in bppairs]
@@ -125,9 +126,9 @@ def mergeValidBPs(validBPs,matrixfile):
 	differences1 = ['NA']+[(bp1s[i+1]-bp1s[i]) for i in range(len(bp1s)-1)]
 	differences2 = ['NA']+[(bp2s[i+1]-bp2s[i]) for i in range(len(bp2s)-1)]
 
-	print differences1,differences2
+	#print differences1,differences2
 	tempMerged = [i for i in bppairs]
-	print tempMerged
+	#print tempMerged
 	for j in range(1,len(differences1)):
 		if differences1[j] == 0 and differences2[j] == 1:
 			#print colsum[bp2s[j-1]],colsum[bp2s[j]]
@@ -144,7 +145,7 @@ def mergeValidBPs(validBPs,matrixfile):
 		else:
 			pass
 
-	print tempMerged
+	#print tempMerged
 
 	mergedValidBPs = []
 	for bp in tempMerged:
@@ -216,12 +217,12 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 
 	#print bp1s,bp2s
 	mergedbp1s = mergeBPs(bp1s,matrix,'row')
-	print mergedbp1s
+	#print mergedbp1s
 	if str(int(max1)-1) not in mergedbp1s:
 		mergedbp1s = mergedbp1s + [str(int(max1)-1)]
 
 	mergedbp2s = mergeBPs(bp2s,matrix,'column')
-	print mergedbp2s
+	#print mergedbp2s
 
 	if str(int(max2)-1) not in mergedbp2s:
 		mergedbp2s = mergedbp2s + [str(int(max2)-1)]
@@ -241,12 +242,12 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 			sm2 = np.nanmedian(matrix[int(bp1)+1:int(bp1)+6,int(bp2)+1:int(bp2)+6])
 			sm3 = np.nanmedian(matrix[int(bp1)-5:int(bp1),int(bp2)-5:int(bp2)])
 			sm4 = np.nanmedian(matrix[int(bp1)+1:int(bp1)+6,int(bp2)-5:int(bp2)])
-			print sm1,sm2,sm3,sm4
+			#print sm1,sm2,sm3,sm4
 			sms = np.sort(np.asarray([sm1,sm2,sm3,sm4]))
 			translocationType = "unbalanced"
 			if sms[2] > min(np.nanpercentile(matrix,80),2) and sms[1] < max(np.nanpercentile(matrix,60),1.5):
 				translocationType = "balanced"
-			print translocationType
+			#print translocationType
 
 			if translocationType == "NULL":
 				continue
@@ -289,7 +290,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 					x1 = 0
 				if y1 < 0:
 					y1 = 0
-				print x1,x2,y1,y2
+				#print x1,x2,y1,y2
 				r1 = matrix[x1:x2,y1:y2]
 				mr1 = np.nanmean(r1)
 
@@ -325,7 +326,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 					x2 = binsize1
 				if y2 >= binsize2:
 					y1 = binsize2
-				print x1,x2,y1,y2
+				#print x1,x2,y1,y2
 				r2 = matrix[x1:x2,y1:y2]
 				mr2 = np.nanmean(r2)
 
@@ -361,7 +362,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 					x1 = 0
 				if y2 > binsize2:
 					y1 = binsize2
-				print x1,x2,y1,y2
+				#print x1,x2,y1,y2
 				r3 = matrix[x1:x2,y1:y2]
 				mr3 = np.nanpercentile(r3,80,interpolation="lower")
 				mr3 = np.nanmean(r3)
@@ -399,7 +400,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 					x2 = binsize1
 				if y1 < 0:
 					y1 = 0
-				print x1,x2,y1,y2
+				#print x1,x2,y1,y2
 				r4 = matrix[x1:x2,y1:y2]
 				#print(np.shape(r4))
 				mr4 = np.nanpercentile(r4,80,interpolation="lower")
@@ -408,7 +409,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 				###   ----|-----
 				###   mr4 | mr2
 
-				print mr1,mr2,mr3,mr4,cutoff
+				#print mr1,mr2,mr3,mr4,cutoff
 				count = 0
 				mrs = [mr1,mr2,mr3,mr4]
 				for mr in mrs:
@@ -417,7 +418,7 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 					else:
 						if mr > cutoff:
 							count += 1
-				print count
+				#print count
 
 				if count == 0:
 					pass
@@ -485,7 +486,7 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 	outf = open(validbpoutputfile,'w')
 	for chrompair in bpInfo:
 		if chrompair in DivisionMatrixInfo:
-			print chrompair
+			#print chrompair
 			bps = bpInfo[chrompair]
 			matrixfile = DivisionMatrixInfo[chrompair]
 			validBPs = filtering(bps,matrixfile,chromSizeInfo,windowsize)
@@ -497,7 +498,7 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 				res = [chrompair] + validbp
 				outf.write('\t'.join(res) + '\n')
 		else:
-			print chrompair
+			print "This chromosomal pair (%s) is not valid"%chrompair
 	outf.close()
 
 	return validbpoutputfile

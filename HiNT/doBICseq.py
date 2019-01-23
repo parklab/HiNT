@@ -20,7 +20,7 @@ def makebinFiles(residualf,regressionf,outbinfile,binsize):
 	normtreat = matrix - mint
 	if np.shape(normtreat)[0] != len(allbins):
 		print np.shape(normtreat)[0],len(allbins)
-		print "residuals and bins are not match!"
+		print "size of the residuals and bins are not match!"
 		sys.exit()
 	else:
 		for i,rowsum in enumerate(normtreat):
@@ -59,7 +59,7 @@ def BICseqPrepare(name,outdir,resolution,resiudalChromFilesInfo,chroms):
 	return subDir,outbinDir,outputconfigfile
 
 def run_BICseq(name,outdir,resolution,resiudalChromFilesInfo,chroms,BICseqpath,CNVplotPath):
-	print resiudalChromFilesInfo
+	#print resiudalChromFilesInfo
 	subDir,outbinDir,outputconfigfile = BICseqPrepare(name,outdir,resolution,resiudalChromFilesInfo,chroms)
 	bicseqOut = os.path.join(subDir,name + '_bicseq_allchroms.txt')
 	tmp = os.path.join(subDir,'tmp')
