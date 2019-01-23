@@ -10,7 +10,7 @@ def write_Rscript(Rscript,datafile,outname,outpdfname,regressionLog):
 	Rscript += 'sink()\n'
 	Rscript += 'data <- read.table(inf,sep="\t",header=T)\n'
 	Rscript += 'data <- data.frame(data)\n'
-	Rscript += 'lm1 <- gam(rowsum ~ (gcper) + s(mapscore) + s(cutSitesNumber),data=data, family=poisson(link=log))\n'
+	Rscript += 'lm1 <- gam(rowsum ~ s(gcper) + s(mapscore) + s(cutSitesNumber),data=data, family=poisson(link=log))\n'
 	Rscript += 'sink("%s",append=T)\n'%regressionLog
 	Rscript += 'summary(lm1)\n'
 	Rscript += 'sink()\n'
