@@ -12,7 +12,7 @@ def get_chromInfo(chromlf):
 		chroms.append(line[0])
 	return chroms,infos
 
-def getSumPerChrom(i, j, hicfile, binsize, chroms, chromInfo,sumInfo):
+def getSumPerChrom(i, j, hicfile, binsize, chroms, chromInfo, sumInfo):
     chrom1 = chroms[i] #the primary chromosome
     chrom2 = chroms[j] #the supplementary chromosome
     chr1 = chrom1.lstrip('chr')

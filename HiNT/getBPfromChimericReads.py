@@ -270,7 +270,7 @@ def getBPfromChimeras(chimericPairsam,restrictionSites,restrictionEnzyme,outdir,
 	command1 = "sort -k2,2 -k5,5 -k3,3n -k 6,6n %s | bgzip -c > %s"%(outputChimeraPairs,sortedChimeras)
 	print(command1)
 	run_cmd(command1)
-	command2 = "%s -f -s2 -d5 -b3 -e4 -u6 -v7 %s"(%pairixpath,%sortedChimeras)
+	command2 = "%s -f -s2 -d5 -b3 -e4 -u6 -v7 %s"%(pairixpath,sortedChimeras)
 	print command2
 	run_cmd(command2)
 	chromInfo = getchromsize(chromlengthf)
