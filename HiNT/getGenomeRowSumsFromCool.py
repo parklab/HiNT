@@ -22,7 +22,7 @@ def getSumPerChunk(coolfile,start,end):
 	rowSums = np.zeros((length,1))
 	#print np.shape(rowSums)
 	binNum = np.shape(coolfile.bins())[0]
-	size = 10
+	size = 100
 	steps = binNum/size
 	for s in range(steps):
 		start2 = s*size
@@ -42,6 +42,7 @@ def getSumPerChunk(coolfile,start,end):
 	return rowSums
 
 def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
+	print "Writing rowsums of %s!"%chrom
 	bins = coolfile.bins()[:]
 	allbins = bins[bins['chrom']== chrom].ix[:,0:3]
 	genomeRowSum = np.reshape(transRowSum,(len(allbins),1))
@@ -49,23 +50,22 @@ def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
 	dfrowsums.to_csv(outputname,sep="\t")
 
 def calRowsums(params):
-	coolfile,binsInfo,targetchrom,outputname = params
-	print chroms
-	print binsInfo
-	print targetchrom
-
+	coolfile,binsInfo,targetchrom,chunksize,name,outputname = params
+	#print coolfile
+	#print binsInfo
+	#print targetchrom
 	s,e = binsInfo[targetchrom]
 	length = e - s + 1
 	RowSums = np.zeros((length,1))
 	steps = length/chunksize
-	print steps
+	#print steps
 	rowsums = np.array([])
 	if steps > 0:
 		for j in range(0,steps-1):
-			print j
+			#print j
 			start = s + j*chunksize
 			end = s + (j+1)*chunksize
-			print start,end
+			#print start,end
 			rowSum = getSumPerChunk(coolfile,start,end)
 			rowsums = np.append(rowsums,rowSum)
 		start = s + chunksize*(steps-1)
@@ -81,27 +81,27 @@ def calRowsums(params):
 		rowsums = np.reshape(rowsums,(len(rowsums),1))
 	genomeRowSum = RowSums + rowsums
 	writeGenomeRowSums(coolfile,genomeRowSum,targetchrom,outputname,name)
-	outInfo = [targetchrom,toutputname]
+	outInfo = targetchrom + '\t' + outputname +'\n'
 	return outInfo
+
 def getallChromsRowSums(coolpath,name,outputdir,resolution):
 	chunksize=1000/int(resolution)
 	coolfile = cooler.Cooler(coolpath)
 	chroms,binsInfo = getBins(coolfile)
 	rowSumFilesInfo = {}
 
-	print chroms
-	print binsInfo
+	#print chroms
+	#print binsInfo
 	allparamsInfo = []
 	for i,targetchrom in enumerate(chroms):
 		outputname = os.path.join(outputdir,name + '_%s_%skb_GenomeRowSums.txt'%(targetchrom,str(resolution)))
-		allparamsInfo.append([coolfile,binsInfo,targetchrom,outputname])
+		allparamsInfo.append([coolfile,binsInfo,targetchrom,chunksize,name,outputname])
 		rowSumFilesInfo[targetchrom] = outputname
 
 	results = []
-	p = Pool(8)
+	p = Pool(12)
 	result = p.map_async(calRowsums, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()
-	print results
-	
+	#print results
 	return rowSumFilesInfo
