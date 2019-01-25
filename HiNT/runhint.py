@@ -89,7 +89,7 @@ def cnvrun(args):
     print chroms
     resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome
     #Segmentation step
-    BICseqPath = os.path.join(opts.bicseq, 'BICseq-seg.pl')
+    BICseqPath = os.path.join(opts.bicseq, 'NBICseq-seg.pl')
     CNVplotPath = resource_filename('HiNT', 'externalScripts/plot.l2r.ms_zoom.R')
     run_BICseq(opts.name,opts.outdir,opts.resolution,resiudalChromFilesInfo,chroms,BICseqPath,CNVplotPath)
     Info("Done! Find your CNV results from %s. ;)"%validBPregionOutf)
