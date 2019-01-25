@@ -61,7 +61,7 @@ def BICseqPrepare(name,outdir,resolution,resiudalChromFilesInfo,chroms):
 def run_BICseq(name,outdir,resolution,resiudalChromFilesInfo,chroms,BICseqpath,CNVplotPath):
 	#print resiudalChromFilesInfo
 	subDir,outbinDir,outputconfigfile = BICseqPrepare(name,outdir,resolution,resiudalChromFilesInfo,chroms)
-	bicseqOut = os.path.join(subDir,name + '_bicseq_allchroms.txt')
+	bicseqOut = os.path.join(subDir,name + '_CNV_segments.txt')
 	tmp = os.path.join(subDir,'tmp')
 	if not os.path.isdir(tmp):
 		os.mkdir(tmp)
@@ -72,3 +72,5 @@ def run_BICseq(name,outdir,resolution,resiudalChromFilesInfo,chroms,BICseqpath,C
 	command2 = 'Rscript %s --lamda 3 --title %s_%skb_GAMPoissonResiduals -i %s -o %s --bin_size %s --chrm'%(CNVplotPath,name,str(resolution),outbinDir,bicseqOut,str(int(resolution)*1000))
 	print command2
 	run_cmd(command2)
+	outfig2 = os.path.join(subDir,name + '_CNV_segments.l2r.pdf')
+	return bicseqOut,outfig,outfig2
