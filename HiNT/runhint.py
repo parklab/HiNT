@@ -92,7 +92,7 @@ def cnvrun(args):
     BICseqPath = os.path.join(opts.bicseq, 'BICseq-seg.pl')
     CNVplotPath = resource_filename('HiNT', 'externalScripts/plot.l2r.ms_zoom.R')
     run_BICseq(opts.name,opts.outdir,opts.resolution,resiudalChromFilesInfo,chroms,BICseqPath,CNVplotPath)
-    #Info("Done! Find your CNV results from %s. ;)"%validBPregionOutf)
+    Info("Done! Find your CNV results from %s. ;)"%validBPregionOutf)
     return
 
 def translrun(args):

@@ -93,7 +93,7 @@ def getFragmentsNumber(sitesInfo, matrixchrom, resolution,chromlength):
 	return bincounts
 
 def Regression(rowsums, mappability,gc,fragmentCounts,outputfilename, filesName):
-	matrix = rowsums.as_matrix()
+	matrix = rowsums.values
 	label = filesName[0]
 	label = label.lstrip('#').strip()
 	outRegressionfile = outputfilename + '%s.txt'%label
