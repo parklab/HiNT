@@ -59,6 +59,7 @@ def sepResidualsByChrom(residualf,chroms,regressionFileInfo):
 			pass
 		else:
 			infname,outfname = residualFileInfo[chrom]
+			#print infname,outfname
 			inf = np.loadtxt(infname)
 			nrow,ncol = np.shape(inf)
 			end = start + nrow

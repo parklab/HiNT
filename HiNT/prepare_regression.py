@@ -147,6 +147,7 @@ def mergeAllchroms(regressionFileInfo,chroms,outfile,headerfile):
 def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,mappablity_track,restrictionSites):
 	regressionFileInfo = {}
 	chroms,chromInfo = get_chromInfo(chromlf)
+	newchroms = []
 	suboutdir = os.path.join(outdir,name+'_dataForRegression')
 	if os.path.isdir(suboutdir):
 		outputname = os.path.join(suboutdir,"regressionInfo")
@@ -155,7 +156,7 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 		outputname = os.path.join(suboutdir,"regressionInfo")
 	sitesInfo = getRestrictionSitesInfo(restrictionSites)
 	for chrom in chromInfo:
-		if chrom not in rowSumFilesInfo or chrom == 'chrY':
+		if chrom not in rowSumFilesInfo or chrom == 'chrY' or chrom == 'chrM':
 			pass
 		else:
 			#print chrom
@@ -173,8 +174,9 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 			nonzerooutputfilename = outRegressionfile.replace('.txt', '_nonzero.txt')
 			getnonzeros(outRegressionfile, nonzerooutputfilename)
 			regressionFileInfo[chrom] = nonzerooutputfilename
+			newchroms.append(chrom)
 	outfile = os.path.join(outputname + '_nonZeros_allchroms.txt')
 	headerfile = resource_filename('HiNT', 'references/regressionDataHeader.txt')
 	mergeAllchroms(regressionFileInfo,chroms,outfile,headerfile)
 	regressionData = outfile
-	return chroms,regressionData,regressionFileInfo
+	return newchroms,regressionData,regressionFileInfo

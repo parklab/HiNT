@@ -97,11 +97,12 @@ def getallChromsRowSums(coolpath,name,outputdir,resolution):
 		outputname = os.path.join(outputdir,name + '_%s_%skb_GenomeRowSums.txt'%(targetchrom,str(resolution)))
 		allparamsInfo.append([coolfile,binsInfo,targetchrom,chunksize,name,outputname])
 		rowSumFilesInfo[targetchrom] = outputname
-
+	'''
 	results = []
 	p = Pool(12)
 	result = p.map_async(calRowsums, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()
 	#print results
+	'''
 	return rowSumFilesInfo
