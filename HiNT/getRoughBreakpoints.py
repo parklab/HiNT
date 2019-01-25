@@ -50,7 +50,8 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 	matrixfiles = os.listdir(outputsubdir)
 	allparamsInfo = []
 	for matrixfile in matrixfiles:
-		tempbpoutputfile = os.path.join(outdir,name + '_roughBP_100kb.txt')
+		matrixfile_prefix = matrixfile.replace('_DivisionMatrix.txt','')
+		tempbpoutputfile = os.path.join(outdir,matrixfile_prefix + '_roughBP_100kb.txt')
 		allparamsInfo.append([RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile])
 	#print allparamsInfo[0]
 	results = []
