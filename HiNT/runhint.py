@@ -42,7 +42,7 @@ This code is free software; you can redistribute it and/or modify it.
 
 import sys, os, time
 import re
-from pkg_resources import resource_filename
+#from pkg_resources import resource_filename
 from HiNT.ArgsValidator import *
 from HiNT.corelib import *
 
@@ -70,7 +70,7 @@ def cnvrun(args):
     from HiNT.prepare_regression import *
     from HiNT.DoRegressionAllchroms import *
     from HiNT.doBICseq import *
-    chromlf = resource_filename('HiNT', 'references/%s.len'%opts.genome)
+    chromlf = os.path.join(opts.referencedir,'references/%s.len'%opts.genome)
     if opts.format == 'cooler':
         from HiNT.getGenomeRowSumsFromCool import *
         rowSumFilesInfo = getallChromsRowSums(opts.matrixfile,opts.name,opts.outdir,opts.resolution) #Calculate rowsums
@@ -81,16 +81,16 @@ def cnvrun(args):
     #    from HiNT.getGenomeRowSumsFromSparse import *
 
     binsize = opts.resolution
-    GCPercent_1kb = resource_filename('HiNT', 'references/%s_1k_GCPercent.bed'%opts.genome)
-    mappablity_track = resource_filename('HiNT', 'references/%s_wgEncodeCrgMapabilityAlign50mer.bdg.gz'%opts.genome)
-    mappablity_trackIndex = resource_filename('HiNT', 'references/%s_wgEncodeCrgMapabilityAlign50mer.bdg.gz.tbi'%opts.genome)
-    restrictionSites = resource_filename('HiNT', 'references/%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
+    GCPercent_1kb = os.path.join(opts.referencedir, 'references/%s_1k_GCPercent.bed'%opts.genome)
+    mappablity_track = os.path.join(opts.referencedir, 'references/%s_wgEncodeCrgMapabilityAlign50mer.bdg.gz'%opts.genome)
+    mappablity_trackIndex = os.path.join(opts.referencedir, 'references/%s_wgEncodeCrgMapabilityAlign50mer.bdg.gz.tbi'%opts.genome)
+    restrictionSites = os.path.join(opts.referencedir, 'references/%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
     chroms,regressionFileAllchroms,regressionChromFilesInfo = prepareData(opts.name,opts.outdir,chromlf,rowSumFilesInfo,binsize,GCPercent_1kb,mappablity_track,restrictionSites) #Prepare the other data Information for regression
     print chroms
     resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome
     #Segmentation step
     BICseqPath = os.path.join(opts.bicseq, 'NBICseq-seg.pl')
-    CNVplotPath = resource_filename('HiNT', 'externalScripts/plot.l2r.ms_zoom.R')
+    CNVplotPath = os.path.join(opts.referencedir, 'externalScripts/plot.l2r.ms_zoom.R')
     bicseqOut,outfig,outfig2 = run_BICseq(opts.name,opts.outdir,opts.resolution,resiudalChromFilesInfo,chroms,BICseqPath,CNVplotPath)
     rowsumsFiles = rowSumFilesInfo.values()
     for rowsumsFile in rowsumsFiles:
@@ -100,7 +100,7 @@ def cnvrun(args):
 
 def translrun(args):
     opts = opt_validate_hinttransl(args)
-    chromlengthf = resource_filename('HiNT', 'references/%s.len'%opts.genome)
+    chromlengthf = os.path.join(opts.referencedir, 'references/%s.len'%opts.genome)
     from HiNT.getRankProduct import *
     from HiNT.getRoughBreakpoints import *
     if opts.format == 'cooler':
@@ -118,14 +118,14 @@ def translrun(args):
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)
     rpoutfile = getRankProduct(matrix1MbInfo,background1MbInfo,opts.outdir,opts.name)
     rpInfo = getRPinfo(rpoutfile)
-    RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
+    RscriptBPcallerPath = os.path.join(opts.referencedir, 'externalScripts/getBreakPoints2steps.R')
     validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath)
     if not opts.chimeric:
         Info("Done! Find your translocation breakpoints file from %s. ;)"%validBPregionOutf)
     else:
         from HiNT.getBPfromChimericReads import *
         from HiNT.BPsummarization import *
-        restrictionSites = resource_filename('HiNT', 'references/%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme)) #This may need to be modified according to Dhawal's script
+        restrictionSites = os.path.join(opts.referencedir, 'references/%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme)) #This may need to be modified according to Dhawal's script
         BP_fromChimerasfile = getBPfromChimeras(opts.chimeric,restrictionSites,opts.enzyme,opts.outdir,opts.name,chromlengthf,validBPregionOutf,opts.pairixpath)
         IntegratedBPf = getSummarizedBP(BP_fromChimerasfile,opts.outdir,opts.name,rpoutfile,validBPregionOutf)
         Info("Done! Find your translocation summarized breakpoints file from %s. ;)"%IntegratedBPf)
