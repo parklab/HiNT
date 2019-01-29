@@ -84,7 +84,7 @@ def calRowsums(params):
 	outInfo = targetchrom + '\t' + outputname +'\n'
 	return outInfo
 
-def getallChromsRowSums(coolpath,name,outputdir,resolution):
+def getallChromsRowSums(coolpath,name,outputdir,resolution,threads):
 	chunksize=1000/int(resolution)
 	coolfile = cooler.Cooler(coolpath)
 	chroms,binsInfo = getBins(coolfile)
@@ -99,7 +99,7 @@ def getallChromsRowSums(coolpath,name,outputdir,resolution):
 		rowSumFilesInfo[targetchrom] = outputname
 	'''
 	results = []
-	p = Pool(12)
+	p = Pool(threads)
 	result = p.map_async(calRowsums, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()

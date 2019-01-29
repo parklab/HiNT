@@ -73,7 +73,7 @@ def cnvrun(args):
     chromlf = os.path.join(opts.referencedir,'%s.len'%opts.genome)
     if opts.format == 'cooler':
         from HiNT.getGenomeRowSumsFromCool import getBins,getSumPerChunk,writeGenomeRowSums,calRowsums,getallChromsRowSums
-        rowSumFilesInfo = getallChromsRowSums(opts.matrixfile,opts.name,opts.outdir,opts.resolution) #Calculate rowsums
+        rowSumFilesInfo = getallChromsRowSums(opts.matrixfile,opts.name,opts.outdir,opts.resolution,opts.threads) #Calculate rowsums
     if opts.format == 'juicer':
         from HiNT.getGenomeRowSumsFromHiC import get_chromInfo,getSumPerChrom,writeGenomeRowSums,getGenomeRowSums
         rowSumFilesInfo = getGenomeRowSums(opts.resolution, opts.matrixfile, chromlf, opts.outdir,opts.name)
@@ -120,7 +120,7 @@ def translrun(args):
     Info("Rank Product Done: find rank product for each chromosomal pair from %s. ;)"%rpoutfile)
     rpInfo = getRPinfo(rpoutfile)
     RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
-    validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath)
+    validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath,opts.threads)
     if not opts.chimeric:
         Info("Done! Find your translocation breakpoints file from %s. ;)"%validBPregionOutf)
     else:

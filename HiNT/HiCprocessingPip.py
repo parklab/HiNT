@@ -6,7 +6,7 @@ from pkg_resources import resource_filename
 def runBWA(opts,dataInfo):
     fq1,fq2 = opts.hicdata
     outbam = os.path.join(opts.outdir, opts.name + '.bam')
-    command = '%s mem -SP5M -t 8 %s %s %s | %s view -Shb - > %s'%(opts.bwapath,opts.bwaIndex,fq1,fq2,opts.samtoolspath,outbam)
+    command = '%s mem -SP5M -t %s %s %s %s | %s view -Shb - > %s'%(opts.bwapath,str(opts.threads),opts.bwaIndex,fq1,fq2,opts.samtoolspath,outbam)
     Info("Alignment with BWA-mem")
     print command
     run_cmd(command)

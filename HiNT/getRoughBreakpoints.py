@@ -27,7 +27,7 @@ def runBPcaller(params):
 	os.remove(tempbpoutputfile)
 	return chrompair_bps
 
-def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller):
+def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller,threads):
 	DivisionMatrixInfo = {}
 	outputsubdir = os.path.join(outdir,"AdjustedMatrixFiles100kb")
 	if not os.path.isdir(outputsubdir):
@@ -55,7 +55,7 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 		allparamsInfo.append([RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile])
 	#print allparamsInfo[0]
 	results = []
-	p = Pool(8)
+	p = Pool(threads)
 	result = p.map_async(runBPcaller, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()
@@ -474,8 +474,8 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 
 	return validBPs
 
-def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller):
-	bpoutputfile,DivisionMatrixInfo = getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller)
+def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller,threads):
+	bpoutputfile,DivisionMatrixInfo = getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,name,cutoff,RscriptBPcaller,threads)
 	chromSizeInfo = getchromsize(chromlengthf,resolution = 100000)
 	bpInfo = readBPs(bpoutputfile,chromSizeInfo)
 	windowsize = 10
