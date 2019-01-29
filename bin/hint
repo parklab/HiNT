@@ -119,7 +119,7 @@ def add_cnv_parser(subparsers):
     cnvparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
                          help="The matrix compressed file contains single or multiple resolutions Hi-C contact matrix files (multi-cool, or hic file), \n\
                          resolution should be set via parameter -r; or a sparse | dense format matrix file whole genome widely (not suggest when using a high resolution)")
-    preparser.add_argument("--refdir",dest="referencedir",type=str,required = True,
+    cnvparser.add_argument("--refdir",dest="referencedir",type=str,required = True,
                          help="the reference directory that downloaded from dropbox dropbox. (https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0.)")
     cnvparser.add_argument("--bicseq",dest="bicseq",type=str,required = True, help="/path/to/bicseqDir/")
     cnvparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer","sparse","dense"), default="cooler",
@@ -146,7 +146,7 @@ def add_translocation_parser(subparsers):
     tranlparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
                          help="The matrix compressed file contains 1Mb and 100kb resolutions Hi-C contact matrix (.hic format), or 1Mb and 100kb resolution files seperate with ',', like /path/to/data_1Mb.cool,/path/to/data_100kb.cool\n\
                          or the directory that contain Hi-C interaction matrix in sparse or dense matrix format, interchromosomal interaction matrices only. Absolute path is required")
-    preparser.add_argument("--refdir",dest="referencedir",type=str,required = True,
+    tranlparser.add_argument("--refdir",dest="referencedir",type=str,required = True,
                          help="the reference directory that downloaded from dropbox dropbox. (https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0.)")
     tranlparser.add_argument("-e","--enzyme",dest="enzyme",type=str,required = False, choices = ("DpnII","MboI","HindIII"), default="MboI",
                          help="Enzyme used in Hi-C experiment, DEFAULT: MboI")
