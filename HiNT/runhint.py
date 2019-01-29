@@ -99,9 +99,9 @@ def cnvrun(args):
 def translrun(args):
     opts = opt_validate_hinttransl(args)
     chromlengthf = os.path.join(opts.referencedir, '%s.len'%opts.genome)
+    Info("Prepare Matrices!")
     from HiNT.getRankProduct import readBackgroundMatrix,gini,getGini,getRankProduct,getRPinfo
     from HiNT.getRoughBreakpoints import getDivisionMatrix,runBPcaller,getAllRoughBreakpoints,getchromsize,readBPs,mergeValidBPs,mergeBPs,relativefold,filtering,getValidRoughBP
-    Info("Prepare Matrices!")
     if opts.format == 'cooler':
         from HiNT.coolToMatrix import getBins,dumpMatrix,coolToMatrix
         matrixfile1Mb,matrixfile100kb = opts.matrixfile
@@ -117,6 +117,7 @@ def translrun(args):
     background1MbInfo = readBackgroundMatrix(backgroundMatrix1MbDir)
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)
     rpoutfile = getRankProduct(matrix1MbInfo,background1MbInfo,opts.outdir,opts.name)
+    print rpoutfile
     Info("Rank Product Done: find rank product for each chromosomal pair from %s. ;)"%rpoutfile)
     rpInfo = getRPinfo(rpoutfile)
     RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
