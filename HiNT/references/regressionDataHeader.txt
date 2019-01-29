@@ -1,1 +1,0 @@
- 	cutSitesNumber	gcper	mapscore	rowsum
