@@ -98,8 +98,8 @@ def add_hicprocessing_parser(subparsers):
                          help="Path to cooler tool, required when the format is cool via cooler")
     preparser.add_argument("--juicerpath",dest="juicerpath",type=str,required = False,
                          help="Path to juicer tools, required when the format is hic via juicer tools")
-    preparser.add_argument("--pairsampath",dest="pairsampath",type=str,required = True,
-                         help="Path to pairsamtools")
+    preparser.add_argument("--pairtoolspath",dest="pairsampath",type=str,required = True,
+                         help="Path to pairtools")
     preparser.add_argument("-n","--name",dest="name",type=str,
                          help="Prefix for the result files. If not set, 'NA' will be used instead")
     preparser.add_argument("-o","--outdir", dest="outdir", type=str, required = False,
