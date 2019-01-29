@@ -42,7 +42,7 @@ This code is free software; you can redistribute it and/or modify it.
 
 import sys, os, time
 import re
-#from pkg_resources import resource_filename
+from pkg_resources import resource_filename
 from HiNT.ArgsValidator import *
 from HiNT.corelib import *
 
