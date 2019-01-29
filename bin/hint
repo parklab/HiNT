@@ -104,6 +104,8 @@ def add_hicprocessing_parser(subparsers):
                          help="Prefix for the result files. If not set, 'NA' will be used instead")
     preparser.add_argument("-o","--outdir", dest="outdir", type=str, required = False,
                          help="Path to the output directory, where you want to store all the output files, if not set, the current directory will be used")
+    preparser.add_argument("-p","--threads", dest="threads", type=int, required = False, default=8,
+                         help="Number of threads for running BWA, DEFAULT: 8")
 
     return
 
@@ -132,6 +134,8 @@ def add_cnv_parser(subparsers):
     cnvparser.add_argument("-o","--outdir", dest="outdir", type = str, help = "Path to the output directory, where you want to store all the output files, if not set, the current directory will be used")
     cnvparser.add_argument("-n","--name",dest="name",type=str,
                          help="Prefix for the result files. If not set, 'NA' will be used instead")
+    cnvparser.add_argument("-p","--threads", dest="threads", type=int, required = False, default=8,
+                         help="Number of threads for running HiNT-cnv, DEFAULT: 8")
 
     return
 
@@ -166,7 +170,8 @@ def add_translocation_parser(subparsers):
     tranlparser.add_argument("-o","--outdir", dest="outdir", type = str,required=False, help = "Path to the output directory, where you want to store all the output files, if not set, the current directory will be used")
     tranlparser.add_argument("-n","--name",dest="name",type=str,required=False,
                          help="Prefix for the result files. If not set, 'NA' will be used instead")
-
+    tranlparser.add_argument("-p","--threads", dest="threads", type=int, required = False, default=8,
+                         help="Number of threads for running HiNT-tl translocation breakpoints detection part, DEFAULT: 8")
 
     return
 
