@@ -117,7 +117,6 @@ def translrun(args):
     background1MbInfo = readBackgroundMatrix(backgroundMatrix1MbDir)
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)
     rpoutfile = getRankProduct(matrix1MbInfo,background1MbInfo,opts.outdir,opts.name)
-    print rpoutfile
     Info("Rank Product Done: find rank product for each chromosomal pair from %s. ;)"%rpoutfile)
     rpInfo = getRPinfo(rpoutfile)
     RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')

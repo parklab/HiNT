@@ -10,7 +10,7 @@ def getBins(coolfile):
 		chromstart = idxarray[0][0]
 		chromend = idxarray[0][-1]
 		binsInfo[chrom] = [chromstart,chromend]
-		print chrom, (chromend - chromstart + 1)
+		#print chrom, (chromend - chromstart + 1)
 	return binsInfo
 
 def dumpMatrix(resolution,coolfile,binsInfo,chrom1,chrom2,outdir,name):
@@ -37,7 +37,7 @@ def coolToMatrix(matrixFile,resolution,outdir,name):
 		for j in range((i+1), len(rankedChroms)-1):
 			chrom1 = rankedChroms[i]
 			chrom2 = rankedChroms[j]
-			print chrom1,chrom2
+			#print chrom1,chrom2
 			matrixfile = dumpMatrix(resolution,coolfile,binsInfo,chrom1,chrom2,outdir,name)
 			MatrixInfo[chrom1+'_'+chrom2] = matrixfile
 	return MatrixInfo
