@@ -11,20 +11,18 @@ def getBins(coolfile):
 		chromend = idxarray[0][-1]
 		binsInfo[chrom] = [chromstart,chromend]
 		print chrom, (chromend - chromstart + 1)
-	#print binsInfo
 	return binsInfo
 
 def dumpMatrix(resolution,coolfile,binsInfo,chrom1,chrom2,outdir,name):
 
 	chrom1start,chrom1end = binsInfo[chrom1]
 	chrom2start,chrom2end = binsInfo[chrom2]
-	#print chrom1start,chrom1end
-	#print chrom2start,chrom2end
 	matrixName = '_'.join([name, str(resolution)+'kb',chrom1,chrom2,"InterMap_matrix.txt"])
 	matrixfile = os.path.join(outdir,matrixName)
+	'''
 	matrix = coolfile.matrix(balance=True)[chrom1start:(chrom1end + 1), chrom2start:(chrom2end + 1)]
 	np.savetxt(matrixfile,matrix,fmt='%.5f',delimiter='\t')
-
+	'''
 	return matrixfile
 
 def coolToMatrix(matrixFile,resolution,outdir,name):

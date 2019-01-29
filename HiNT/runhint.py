@@ -48,7 +48,7 @@ from HiNT.corelib import *
 
 def prerun(args):
     opts = opt_validate_hintpre(args)
-    from HiNT.HiCprocessingPip import *
+    from HiNT.HiCprocessingPip import runBWA,runpairsamtools,sortpairsam,pairsIndex,runcooler,runjuicer
     dataInfo = {}
     if opts.inputformat == "fastq":
         Info("Align to %s via BWA mem"%opts.genome)
@@ -67,21 +67,19 @@ def prerun(args):
 
 def cnvrun(args):
     opts = opt_validate_hintcnv(args)
-    from HiNT.prepare_regression import *
-    from HiNT.DoRegressionAllchroms import *
-    from HiNT.doBICseq import *
+    from HiNT.prepare_regression import get_chromInfo,getGCpercent,getmappability,getRestrictionSitesInfo,getFragmentsNumber,Regression,getnonzeros,mergeAllchroms,prepareData
+    from HiNT.DoRegressionAllchroms import write_Rscript,DoRegression,sepResidualsByChrom,calculateResiduals
+    from HiNT.doBICseq import makebinFiles,BICseqPrepare,run_BICseq
     chromlf = os.path.join(opts.referencedir,'%s.len'%opts.genome)
     if opts.format == 'cooler':
-        from HiNT.getGenomeRowSumsFromCool import *
+        from HiNT.getGenomeRowSumsFromCool import getBins,getSumPerChunk,writeGenomeRowSums,calRowsums,getallChromsRowSums
         rowSumFilesInfo = getallChromsRowSums(opts.matrixfile,opts.name,opts.outdir,opts.resolution) #Calculate rowsums
     if opts.format == 'juicer':
-        from HiNT.getGenomeRowSumsFromHiC import *
+        from HiNT.getGenomeRowSumsFromHiC import get_chromInfo,getSumPerChrom,writeGenomeRowSums,getGenomeRowSums
         rowSumFilesInfo = getGenomeRowSums(opts.resolution, opts.matrixfile, chromlf, opts.outdir,opts.name)
-    #if opts.format == 'sparse':
-    #    from HiNT.getGenomeRowSumsFromSparse import *
 
     binsize = opts.resolution
-    GCPercent_1kb = os.path.join(opts.referencedir, '%s_1k_GCPercent.bed'%opts.genome)
+    GCPercent_1kb = os.path.join(opts.referencedir, '%s_1kb_GCPercent.bed'%opts.genome)
     mappablity_track = os.path.join(opts.referencedir, '%s_mappability_50mer.bdg.gz'%opts.genome)
     mappablity_trackIndex = os.path.join(opts.referencedir, '%s_mappability_50mer.bdg.gz.tbi'%opts.genome)
     restrictionSites = os.path.join(opts.referencedir, '%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
@@ -101,15 +99,15 @@ def cnvrun(args):
 def translrun(args):
     opts = opt_validate_hinttransl(args)
     chromlengthf = os.path.join(opts.referencedir, '%s.len'%opts.genome)
-    from HiNT.getRankProduct import *
-    from HiNT.getRoughBreakpoints import *
+    from HiNT.getRankProduct import readBackgroundMatrix,gini,getGini,getRankProduct,getRPinfo
+    from HiNT.getRoughBreakpoints import getDivisionMatrix,runBPcaller,getAllRoughBreakpoints,getchromsize,readBPs,mergeValidBPs,mergeBPs,relativefold,filtering,getValidRoughBP
     if opts.format == 'cooler':
-        from HiNT.coolToMatrix import *
+        from HiNT.coolToMatrix import getBins,dumpMatrix,coolToMatrix
         matrixfile1Mb,matrixfile100kb = opts.matrixfile
         matrix1MbInfo = coolToMatrix(matrixfile1Mb,1000,opts.outdir,opts.name)
         matrix100kbInfo = coolToMatrix(matrixfile100kb,100,opts.outdir,opts.name)
     if opts.format == 'juicer':
-        from HiNT.hicToMatrix import *
+        from HiNT.hicToMatrix import get_chromInfo,dumpMatrix,hicToMatrix
         matrix1MbInfo = hicToMatrix(opts.matrixfile, 1000, chromlengthf, opts.outdir, opts.name)
         matrix100kbInfo = hicToMatrix(opts.matrixfile, 100, chromlengthf, opts.outdir, opts.name)
     backgroundMatrix1MbDir = os.path.join(opts.backgroundInterChromMatrixDir,'1Mb')
@@ -117,14 +115,15 @@ def translrun(args):
     background1MbInfo = readBackgroundMatrix(backgroundMatrix1MbDir)
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)
     rpoutfile = getRankProduct(matrix1MbInfo,background1MbInfo,opts.outdir,opts.name)
+    Info("Rank Product Done: find rank product for each chromosomal pair from %s. ;)"%rpoutfile)
     rpInfo = getRPinfo(rpoutfile)
     RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
     validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath)
     if not opts.chimeric:
         Info("Done! Find your translocation breakpoints file from %s. ;)"%validBPregionOutf)
     else:
-        from HiNT.getBPfromChimericReads import *
-        from HiNT.BPsummarization import *
+        from HiNT.getBPfromChimericReads import extrac_nonHiCchimeric,makePairFormat,getchromsize,readFilteredBPs,is_qualified_clipped,getclipPos_pair,singleSide_clip_pos_calculation,further_filtering,getReads,getBPfromChimeras
+        from HiNT.BPsummarization import readchemiricBPs,mergeCloseBPs,readchimericInfo,readGiniIndexf,readbpregionf,integration,getSummarizedBP
         restrictionSites = os.path.join(opts.referencedir, '%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme)) #This may need to be modified according to Dhawal's script
         BP_fromChimerasfile = getBPfromChimeras(opts.chimeric,restrictionSites,opts.enzyme,opts.outdir,opts.name,chromlengthf,validBPregionOutf,opts.pairixpath)
         IntegratedBPf = getSummarizedBP(BP_fromChimerasfile,opts.outdir,opts.name,rpoutfile,validBPregionOutf)

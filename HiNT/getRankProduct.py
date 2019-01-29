@@ -63,6 +63,7 @@ def getGini(mat1,mat2):
 
 def getRankProduct(matrix1MbInfo,background1MbInfo,outdir,name):
     rpout = os.path.join(outdir,name + '_chrompairs_rankProduct.txt')
+    '''
     outf = open(rpout,'w')
     ginis = []
     maximums = []
@@ -87,7 +88,7 @@ def getRankProduct(matrix1MbInfo,background1MbInfo,outdir,name):
         newres = [chrompair, str(gini), str(maximum), str(rp)]
         outf.write('\t'.join(newres) + '\n')
     outf.close()
-
+    '''
     return rpout
 
 def getRPinfo(rpout):
