@@ -144,7 +144,7 @@ def mergeAllchroms(regressionFileInfo,chroms,outfile,headerfile):
 	print command
 	run_cmd(command)
 
-def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,mappablity_track,restrictionSites):
+def prepareData(name,outdir,referencedir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,mappablity_track,restrictionSites):
 	regressionFileInfo = {}
 	chroms,chromInfo = get_chromInfo(chromlf)
 	newchroms = []
@@ -176,7 +176,7 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 			regressionFileInfo[chrom] = nonzerooutputfilename
 			newchroms.append(chrom)
 	outfile = os.path.join(outputname + '_nonZeros_allchroms.txt')
-	headerfile = os.path.join(opts.referencedir, 'regressionDataHeader.txt')
+	headerfile = os.path.join(referencedir, 'regressionDataHeader.txt')
 	mergeAllchroms(regressionFileInfo,chroms,outfile,headerfile)
 	regressionData = outfile
 	return newchroms,regressionData,regressionFileInfo

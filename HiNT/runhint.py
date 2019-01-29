@@ -83,7 +83,7 @@ def cnvrun(args):
     mappablity_track = os.path.join(opts.referencedir, '%s_mappability_50mer.bdg.gz'%opts.genome)
     mappablity_trackIndex = os.path.join(opts.referencedir, '%s_mappability_50mer.bdg.gz.tbi'%opts.genome)
     restrictionSites = os.path.join(opts.referencedir, '%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
-    chroms,regressionFileAllchroms,regressionChromFilesInfo = prepareData(opts.name,opts.outdir,chromlf,rowSumFilesInfo,binsize,GCPercent_1kb,mappablity_track,restrictionSites) #Prepare the other data Information for regression
+    chroms,regressionFileAllchroms,regressionChromFilesInfo = prepareData(opts.name,opts.outdir,opts.referencedir,chromlf,rowSumFilesInfo,binsize,GCPercent_1kb,mappablity_track,restrictionSites) #Prepare the other data Information for regression
     print chroms
     resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome
     #Segmentation step
@@ -101,6 +101,7 @@ def translrun(args):
     chromlengthf = os.path.join(opts.referencedir, '%s.len'%opts.genome)
     from HiNT.getRankProduct import readBackgroundMatrix,gini,getGini,getRankProduct,getRPinfo
     from HiNT.getRoughBreakpoints import getDivisionMatrix,runBPcaller,getAllRoughBreakpoints,getchromsize,readBPs,mergeValidBPs,mergeBPs,relativefold,filtering,getValidRoughBP
+    Info("Prepare Matrices!")
     if opts.format == 'cooler':
         from HiNT.coolToMatrix import getBins,dumpMatrix,coolToMatrix
         matrixfile1Mb,matrixfile100kb = opts.matrixfile
@@ -112,6 +113,7 @@ def translrun(args):
         matrix100kbInfo = hicToMatrix(opts.matrixfile, 100, chromlengthf, opts.outdir, opts.name)
     backgroundMatrix1MbDir = os.path.join(opts.backgroundInterChromMatrixDir,'1Mb')
     backgroundMatrix100kbDir = os.path.join(opts.backgroundInterChromMatrixDir,'100kb')
+    Info("Get matrix Info!")
     background1MbInfo = readBackgroundMatrix(backgroundMatrix1MbDir)
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)
     rpoutfile = getRankProduct(matrix1MbInfo,background1MbInfo,opts.outdir,opts.name)
