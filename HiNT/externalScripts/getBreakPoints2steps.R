@@ -154,7 +154,7 @@ searchBalancedMatric <- function(matrixf,chrompair,threads){
 #print(divisionMatrixDir)
 #print(matrixfiles)
 #matrixfiles = c("chr9_chr13_DivisionMatrix.txt")
-threads = 2
+threads = 8
 
 matrixf <- file.path(divisionMatrixDir,matrix)
 chrompair = paste(strsplit(matrix,'_')[[1]][2],strsplit(matrix,'_')[[1]][3],sep="_")
@@ -168,7 +168,7 @@ if(traltype == "unbalancedTRAL"){
 	res <- searchBalancedMatric(matrixf,chrompair,threads)
 }
 
-write.table(allres,file=outputfile,sep="\t",quote=F,row.names=F)
+write.table(res,file=outputfile,sep="\t",quote=F,row.names=F)
 
 #end_time <- Sys.time()
 #print(start_time)
