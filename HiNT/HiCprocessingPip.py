@@ -17,7 +17,7 @@ def runBWA(opts,dataInfo):
 
 def runpairsamtools(dataInfo,opts):
     inbam = dataInfo['bam']
-    chromsizef = os.path.join(opts.referencedir, 'references/%s.len'%opts.genome)
+    chromsizef = os.path.join(opts.referencedir, '%s.len'%opts.genome)
     outpairsam = os.path.join(opts.outdir,opts.name + '.pairsam.gz')
     command = '%s view -h %s | %s parse -c %s -o %s --assembly %s'%(opts.samtoolspath,inbam,opts.pairsampath,chromsizef,outpairsam,opts.genome)
     print(command)
@@ -27,7 +27,7 @@ def runpairsamtools(dataInfo,opts):
     return dataInfo
 
 def sortpairsam(dataInfo,opts):
-    chromsizef = os.path.join(opts.referencedir, 'references/%s.len'%opts.genome)
+    chromsizef = os.path.join(opts.referencedir, '%s.len'%opts.genome)
     pairsamf = dataInfo['pairsam']
     sortedpairsam = pairsamf.rstrip('.pairsam.gz') + '.sorted.pairsam.gz'
     tmpdir = os.path.join(opts.outdir,'tmp')
@@ -81,7 +81,7 @@ def pairsIndex(dataInfo,opts):
 
 def runcooler(dataInfo,opts):
     pairsfile = dataInfo['bgzippedValidPairs']
-    chromsizef = os.path.join(opts.referencedir, 'references/%.len'%opts.genome)
+    chromsizef = os.path.join(opts.referencedir, '%.len'%opts.genome)
     if not opts.resolution:
         resolutions = [50,100,1000]
     else:

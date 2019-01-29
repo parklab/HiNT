@@ -176,7 +176,7 @@ def prepareData(name,outdir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,ma
 			regressionFileInfo[chrom] = nonzerooutputfilename
 			newchroms.append(chrom)
 	outfile = os.path.join(outputname + '_nonZeros_allchroms.txt')
-	headerfile = os.path.join(opts.referencedir, 'references/regressionDataHeader.txt')
+	headerfile = os.path.join(opts.referencedir, 'regressionDataHeader.txt')
 	mergeAllchroms(regressionFileInfo,chroms,outfile,headerfile)
 	regressionData = outfile
 	return newchroms,regressionData,regressionFileInfo
