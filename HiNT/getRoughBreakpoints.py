@@ -59,7 +59,7 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 	result = p.map_async(runBPcaller, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()
-
+	print results
 	with open(bpoutputfile,'w') as outf:
 		for line in results:
 			if line != False:

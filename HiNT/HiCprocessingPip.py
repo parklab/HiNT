@@ -81,7 +81,7 @@ def pairsIndex(dataInfo,opts):
 
 def runcooler(dataInfo,opts):
     pairsfile = dataInfo['bgzippedValidPairs']
-    chromsizef = os.path.join(opts.referencedir, '%.len'%opts.genome)
+    chromsizef = os.path.join(opts.referencedir, '%s.len'%opts.genome)
     if not opts.resolution:
         resolutions = [50,100,1000]
     else:
