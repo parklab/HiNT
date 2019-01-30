@@ -51,9 +51,6 @@ def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
 
 def calRowsums(params):
 	coolfile,binsInfo,targetchrom,chunksize,name,outputname = params
-	#print coolfile
-	#print binsInfo
-	#print targetchrom
 	s,e = binsInfo[targetchrom]
 	length = e - s + 1
 	RowSums = np.zeros((length,1))
@@ -90,8 +87,6 @@ def getallChromsRowSums(coolpath,name,outputdir,resolution,threads):
 	chroms,binsInfo = getBins(coolfile)
 	rowSumFilesInfo = {}
 
-	#print chroms
-	#print binsInfo
 	allparamsInfo = []
 	for i,targetchrom in enumerate(chroms):
 		outputname = os.path.join(outputdir,name + '_%s_%skb_GenomeRowSums.txt'%(targetchrom,str(resolution)))

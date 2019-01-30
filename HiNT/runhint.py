@@ -84,7 +84,7 @@ def cnvrun(args):
     mappablity_trackIndex = os.path.join(opts.referencedir, '%s_mappability_50mer.bdg.gz.tbi'%opts.genome)
     restrictionSites = os.path.join(opts.referencedir, '%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
     chroms,regressionFileAllchroms,regressionChromFilesInfo = prepareData(opts.name,opts.outdir,opts.referencedir,chromlf,rowSumFilesInfo,binsize,GCPercent_1kb,mappablity_track,restrictionSites) #Prepare the other data Information for regression
-    print chroms
+    #print chroms
     resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome
     #Segmentation step
     BICseqPath = os.path.join(opts.bicseq, 'NBICseq-seg.pl')

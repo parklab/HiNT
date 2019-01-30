@@ -40,8 +40,6 @@ def getGCpercent(gcfile,chrom,resolution):
 
 def getmappability(mappablity_track, matrixchrom, matrixstart, matrixend, resolution):
 	tb = tabix.open(mappablity_track)
-	#print mappablity_track
-	#print matrixchrom, int(matrixstart), int(matrixend)
 	records = tb.query(matrixchrom, int(matrixstart), int(matrixend))
 	Allstart = int(matrixstart)
 	Allend = int(matrixend)
