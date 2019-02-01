@@ -41,8 +41,6 @@ def getGini(mat1,mat2):
     cidx1 = np.where(colsum1==0)
     ridx2 = np.where(rowsum2==0)
     cidx2 = np.where(colsum2==0)
-    #print ridx1,ridx2
-    #print cidx1,cidx2
     ridx = np.union1d(ridx1[0], ridx2[0])
     cidx = np.union1d(cidx1[0], cidx2[0])
 
@@ -63,7 +61,6 @@ def getGini(mat1,mat2):
 
 def getRankProduct(matrix1MbInfo,background1MbInfo,outdir,name):
     rpout = os.path.join(outdir,name + '_chrompairs_rankProduct.txt')
-    '''
     outf = open(rpout,'w')
     ginis = []
     maximums = []
@@ -88,7 +85,7 @@ def getRankProduct(matrix1MbInfo,background1MbInfo,outdir,name):
         newres = [chrompair, str(gini), str(maximum), str(rp)]
         outf.write('\t'.join(newres) + '\n')
     outf.close()
-    '''
+   
     return rpout
 
 def getRPinfo(rpout):
@@ -101,5 +98,4 @@ def getRPinfo(rpout):
             line = line.strip().split('\t')
             chrompair, gini, maximum, rp = line
             rpInfo[chrompair] = rp
-    #print rpInfo
     return rpInfo

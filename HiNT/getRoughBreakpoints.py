@@ -17,7 +17,7 @@ def getDivisionMatrix(mat1,mat2,fname):
 	return
 
 def runBPcaller(params):
-	print params
+	#print params
 	RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile = params
 	#print RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile
 	command = "Rscript %s %s %s %s"%(RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile)
@@ -59,12 +59,15 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 	result = p.map_async(runBPcaller, allparamsInfo, callback=results.append)
 	p.close()
 	p.join()
-	print results
-	with open(bpoutputfile,'w') as outf:
-		for line in results:
-			if line != False:
-				outf.write(line)
 
+	#print results
+	with open(bpoutputfile,'w') as outf:
+		for i,line in enumerate(results[0]):
+			if i == 0:
+				outf.write(line[0])
+				outf.write(line[1])
+			else:
+				outf.write(line[1])
 	return bpoutputfile,DivisionMatrixInfo
 
 ##################################################################################################
@@ -481,6 +484,7 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 	windowsize = 10
 	validbpoutputfile = os.path.join(outdir,name + '_roughBP_100kb_filtered.txt')
 	outf = open(validbpoutputfile,'w')
+	#print DivisionMatrixInfo.keys()
 	for chrompair in bpInfo:
 		if chrompair in DivisionMatrixInfo:
 			#print chrompair

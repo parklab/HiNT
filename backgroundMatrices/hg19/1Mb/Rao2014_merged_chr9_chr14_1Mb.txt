@@ -1,1 +1,0 @@
-/home/sw229/Storage/HiC_SV/Analysis/Background/normalCool/1Mb/mergedMatrix_newProcessed/Rao2014_merged_chr9_chr14_1Mb.txt
