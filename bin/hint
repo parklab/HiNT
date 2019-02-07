@@ -163,7 +163,7 @@ def add_translocation_parser(subparsers):
     tranlparser.add_argument("--chimeric",dest="chimeric",type=str,required = False,
                          help="Chimeric read pairs with .pairsam format. If no chimeric reads provided, breakpoints in 100kb resolution will be output only")
     tranlparser.add_argument("--backdir",dest="backgroundInterChromMatrixDir",type=str,required = True,
-                         help="Path to the directory of backgroundInterchromMatrixDir, located in the install package, named as backgroundMatrices, e,g. path_to_HiNT/backgroundMatrices/genome")
+                         help="Path to the directory of backgroundInterchromMatrixDir, can be downloaded from https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0., named as backgroundMatrices, e,g. path_to_/backgroundMatrices/genome")
     tranlparser.add_argument("-c","--cutoff",dest="cutoff",type=float,required = False,default=0.05,
                          help="Cutoff of the rank product for chromosomal pairs to select candidate translocated chromosomal pairs, default = 0.05")
 
