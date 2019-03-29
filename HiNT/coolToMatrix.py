@@ -19,10 +19,9 @@ def dumpMatrix(resolution,coolfile,binsInfo,chrom1,chrom2,outdir,name):
 	chrom2start,chrom2end = binsInfo[chrom2]
 	matrixName = '_'.join([name, str(resolution)+'kb',chrom1,chrom2,"InterMap_matrix.txt"])
 	matrixfile = os.path.join(outdir,matrixName)
-	'''
 	matrix = coolfile.matrix(balance=True)[chrom1start:(chrom1end + 1), chrom2start:(chrom2end + 1)]
 	np.savetxt(matrixfile,matrix,fmt='%.5f',delimiter='\t')
-	'''
+
 	return matrixfile
 
 def coolToMatrix(matrixFile,resolution,outdir,name):
