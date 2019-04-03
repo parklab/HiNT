@@ -59,10 +59,10 @@ Other dependencies
 2. Put reference files into the HiNT directory ```$ mv hg19/* where_you_put_HiNT/HiNT/HiNT/references/```
 
 ## Quick Start
+
+* [Download](https://www.dropbox.com/sh/z1rceh8ddnsdtj7/AAC0VuDu48eh_RtzKHipztkLa?dl=0) test datasets
+
 ### HiNT-PRE
-
-* Download test datasets from https://www.dropbox.com/sh/z1rceh8ddnsdtj7/AAC0VuDu48eh_RtzKHipztkLa?dl=0
-
 HiNT pre: Preprocessing Hi-C data. HiNT pre does alignment, contact matrix creation and normalization in one command line.
 
 ```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairsampath /path/to/pairsamtools```
