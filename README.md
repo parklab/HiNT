@@ -60,7 +60,7 @@ Other dependencies
 
 ## Quick Start
 
-* [Download](https://www.dropbox.com/sh/z1rceh8ddnsdtj7/AAC0VuDu48eh_RtzKHipztkLa?dl=0) test datasets
+* Download the test datasets from [HERE](https://www.dropbox.com/sh/z1rceh8ddnsdtj7/AAC0VuDu48eh_RtzKHipztkLa?dl=0)
 
 ### HiNT-PRE
 HiNT pre: Preprocessing Hi-C data. HiNT pre does alignment, contact matrix creation and normalization in one command line.
