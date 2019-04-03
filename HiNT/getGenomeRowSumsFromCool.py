@@ -23,7 +23,7 @@ def getSumPerChunk(coolfile,start,end):
 	#print np.shape(rowSums)
 	binNum = np.shape(coolfile.bins())[0]
 	size = 100
-	steps = binNum/size
+	steps = int(binNum/size)
 	for s in range(steps):
 		start2 = s*size
 		end2 = (s+1)*size
@@ -42,7 +42,7 @@ def getSumPerChunk(coolfile,start,end):
 	return rowSums
 
 def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
-	print "Writing rowsums of %s!"%chrom
+	print("Writing rowsums of %s!"%chrom)
 	bins = coolfile.bins()[:]
 	allbins = bins[bins['chrom']== chrom].ix[:,0:3]
 	genomeRowSum = np.reshape(transRowSum,(len(allbins),1))
@@ -54,8 +54,8 @@ def calRowsums(params):
 	s,e = binsInfo[targetchrom]
 	length = e - s + 1
 	RowSums = np.zeros((length,1))
-	steps = length/chunksize
-	#print steps
+	steps = int(length/chunksize)
+	#print(steps)
 	rowsums = np.array([])
 	if steps > 0:
 		for j in range(0,steps-1):
@@ -77,12 +77,13 @@ def calRowsums(params):
 		rowsums = getSumPerChunk(coolfile,s,e+1)
 		rowsums = np.reshape(rowsums,(len(rowsums),1))
 	genomeRowSum = RowSums + rowsums
+	#print(np.shape(genomeRowSum))
 	writeGenomeRowSums(coolfile,genomeRowSum,targetchrom,outputname,name)
 	outInfo = targetchrom + '\t' + outputname +'\n'
 	return outInfo
 
 def getallChromsRowSums(coolpath,name,outputdir,resolution,threads):
-	chunksize=1000/int(resolution)
+	chunksize=int(1000/int(resolution))
 	coolfile = cooler.Cooler(coolpath)
 	chroms,binsInfo = getBins(coolfile)
 	rowSumFilesInfo = {}

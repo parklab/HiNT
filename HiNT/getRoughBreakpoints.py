@@ -21,7 +21,7 @@ def runBPcaller(params):
 	RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile = params
 	#print RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile
 	command = "Rscript %s %s %s %s"%(RscriptBPcaller,outputsubdir,matrixfile,tempbpoutputfile)
-	print command
+	print(command)
 	run_cmd(command)
 	chrompair_bps = open(tempbpoutputfile).readlines()
 	os.remove(tempbpoutputfile)
@@ -79,7 +79,7 @@ def getchromsize(chromlengthf,resolution):
 	for line in inf:
 		line = line.strip().split('\t')
 		chrom,size = line
-		chromSizeInfo[chrom] = [int(size),(int(size)/int(resolution)+1)]
+		chromSizeInfo[chrom] = [int(size),int(int(size)/int(resolution)+1)]
 	return chromSizeInfo
 
 def readBPs(breakpointsf,chromSizeInfo):
@@ -115,7 +115,7 @@ def mergeValidBPs(validBPs,matrixfile):
 	bppairs = [(i[1],i[3]) for i in tempBPs]
 	chrompair = list(set([(i[0],i[2]) for i in tempBPs]))
 	if len(chrompair) != 1:
-		print chrompair
+		print(chrompair)
 
 	#print tempBPs,chrompair
 
@@ -175,12 +175,12 @@ def mergeBPs(bps,matrix,axis,windowsize=5):
 				sumb = np.nansum(matrix[:,b])
 				sumbr = np.nansum(matrix[:,b+1])
 			else:
-				print "give the correct axis, row or column"
+				print("give the correct axis, row or column")
 			if suma > sumar and sumb < sumbr: # __|--|__
 				fca = suma/sumar
 				fcb = sumbr/sumb
 				if suma > sumbr and fca > fcb:
-					print "merge",np.nansum(matrix[a-1,:]), suma, sumar, np.nansum(matrix[b-1,:]),sumb, sumbr, fca, fcb
+					print("merge",np.nansum(matrix[a-1,:]), suma, sumar, np.nansum(matrix[b-1,:]),sumb, sumbr, fca, fcb)
 					mergedbps.append(str(a))
 					mergedbps.remove(str(b))
 				elif suma < sumbr and fca > fcb:
@@ -227,11 +227,11 @@ def filtering(bps,matrixfile,chromSizeInfo,windowsize):
 	if str(int(max2)-1) not in mergedbp2s:
 		mergedbp2s = mergedbp2s + [str(int(max2)-1)]
 
-	print mergedbp1s,mergedbp2s
+	print(mergedbp1s,mergedbp2s)
 
 	validBPs = []
-	binsize1 = chromSizeInfo[chr1]
-	binsize2 = chromSizeInfo[chr2]
+	binsize1 = chromSizeInfo[chr1][1]
+	binsize2 = chromSizeInfo[chr2][1]
 
 	cutoff = np.nanpercentile(matrix,99)
 	#print "cutoff:", cutoff
@@ -499,7 +499,7 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 				res = [chrompair] + validbp
 				outf.write('\t'.join(res) + '\n')
 		else:
-			print "This chromosomal pair (%s) is not valid"%chrompair
+			print("This chromosomal pair (%s) is not valid"%chrompair)
 	outf.close()
 
 	return validbpoutputfile

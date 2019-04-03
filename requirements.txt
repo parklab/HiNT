@@ -1,0 +1,10 @@
+h5py>=2.8.0
+numpy>=1.10.1
+cooler>=0.8.2
+pypairix>=0.3.0
+pairtools>=0.2.2
+scipy>=1.0.1
+pandas>=0.23.0
+scikit-learn>=0.19.1
+multiprocess>=0.70.5
+argparse>=1.1

@@ -3,7 +3,7 @@
 import sys
 import struct
 import requests
-import StringIO
+import io
 
 def readcstr(f):
     buf = bytearray()
@@ -27,10 +27,10 @@ if (infile.startswith("http")):
     s = requests.Session()
     r=s.get(infile, headers=headers)
     if (r.status_code >=400):
-        print("Error accessing " + infile) 
-        print("HTTP status code " + str(r.status_code))
+        print(("Error accessing " + infile)) 
+        print(("HTTP status code " + str(r.status_code)))
         sys.exit(1)
-    req=StringIO.StringIO(r.content)        
+    req=io.StringIO(r.content)        
     myrange=r.headers['content-range'].split('/')
     totalbytes=myrange[1]
 else:
@@ -42,18 +42,18 @@ if (magic_string != b"HIC"):
     print('This does not appear to be a HiC file magic string is incorrect')
     sys.exit(1)
 version = struct.unpack('<i',req.read(4))[0]
-print 'HiC version:'
-print '  {0}'.format(str(version)) 
+print('HiC version:')
+print('  {0}'.format(str(version))) 
 masterindex = struct.unpack('<q',req.read(8))[0]
 genome = ""
 c=req.read(1)
 while (c != '\0'):
     genome += c
     c=req.read(1)
-print 'Genome ID:'
-print '  {0}'.format(str(genome)) 
+print('Genome ID:')
+print('  {0}'.format(str(genome))) 
 # read and throw away attribute dictionary (stats+graphs)
-print 'Attribute dictionary:'
+print('Attribute dictionary:')
 nattributes = struct.unpack('<i',req.read(4))[0]
 for x in range(0, nattributes):
   key = readcstr(req)
@@ -61,18 +61,18 @@ for x in range(0, nattributes):
 #  print '   Key:{0}'.format(key)
 #  print '   Value:{0}'.format(value)
 nChrs = struct.unpack('<i',req.read(4))[0]
-print "Chromosomes: "
+print("Chromosomes: ")
 for x in range(0, nChrs):
   name = readcstr(req)
   length = struct.unpack('<i',req.read(4))[0]
-  print '  {0}  {1}'.format(name, length)
+  print('  {0}  {1}'.format(name, length))
 nBpRes = struct.unpack('<i',req.read(4))[0]
-print "Base pair-delimited resolutions: "
+print("Base pair-delimited resolutions: ")
 for x in range(0, nBpRes):
   res = struct.unpack('<i',req.read(4))[0]
-  print '   {0}'.format(res)
+  print('   {0}'.format(res))
 nFrag = struct.unpack('<i',req.read(4))[0]
-print "Fragment-delimited resolutions: "
+print("Fragment-delimited resolutions: ")
 for x in range(0, nFrag):
   res = struct.unpack('<i',req.read(4))[0]
-  print '   {0}'.format(res)
+  print('   {0}'.format(res))

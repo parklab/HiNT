@@ -5,27 +5,10 @@
 #' Author: Maxwell Sherman & Semin Lee (?)
 #' Revised: 08-15-16
 #' Revision notes: generic fns from R/fnUtils.R
-Args <- commandArgs()
 
-bin_dir = Args[6]
-seg_file = Args[7]
-bin_size = Args[8]
-mouse = Args[9]
-title = Args[10]
-
-bin.dir.tmr = bin_dir
-seg.file    = seg_file
-bin.size    = bin_size
-lamda       = 3
-mouse       = mouse
-title       = title
-loc       = NULL
-chrm        = 'TRUE'
-xy          = TRUE
-k           = 5 # integer width of median window, must be odd
-
-
+library("parallel")
 library("Cairo")
+library("optparse")
 
 chrFromSpecies <- function(species) {
     # Returns chromosome numbers based on species
@@ -168,7 +151,7 @@ plot.l2r <- function(bin.dir.tmr, seg.file, bin.size, lamda,
     ##  Returns:
     ##      --              --      Saves plot
 
-    if (mouse == "0") {
+    if (mouse) {
         species <- "mouse"
     } else {
         species <- "human"
@@ -369,5 +352,35 @@ ParseLocation <- function(loc.str) {
     }
 }
 
+# Create parser options
+option_list = list(
+    make_option(c('-i', '--bin_dir'), type="character", default=NULL, help="input bin dir"),
+    make_option(c('-o', '--seg_file'), type="character", default=NULL, help="BICseq output file"),
+    make_option(c('--bin_size'), type="integer", default=100, help="BICseq bin size"),
+    make_option(c('--lamda'), type="integer", default=3, help="lambda of BICseq algorithm"),
+    make_option(c('--mouse'), type="integer", default=0, help="mouse?"),
+    make_option(c('--title'), type="character", default=NULL, help="figure title"),
+    make_option(c('--loc'), type="character", default=NULL, help="specific genome location as chr:start-end"),
+    make_option(c('--chrm'), action='store_true', default=FALSE, help="\'chrm\' in bin file names")
+)
+
+# Create parser and parse command line arguments
+opt_parser = OptionParser(option_list=option_list)
+opts = parse_args(opt_parser)
+
+bin.dir.tmr = opts$bin_dir
+seg.file    = opts$seg_file
+bin.size    = opts$bin_size
+lamda       = opts$lamda
+mouse       = opts$mouse
+title       = opts$title
+chrm        = opts$chrm
+xy          = TRUE
+k           = 5 # integer width of median window, must be odd
+print(opts$loc)
+loc         = ParseLocation(opts$loc)
+
+if (length(args) == 7)  { xy   = args[[7]] }
+if (length(args) > 7)   { k    = as.numeric(args[[8]]) }
 
 plot.l2r(bin.dir.tmr, seg.file, bin.size, lamda, mouse, title, xy=xy, k=k, loc=loc, chrm=chrm)

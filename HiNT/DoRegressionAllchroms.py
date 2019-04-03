@@ -36,7 +36,7 @@ def DoRegression(name,outdir,regressionData):
 	outf.write(Rscript)
 	outf.close()
 	command = "Rscript %s"%Rfile
-	print command
+	print(command)
 	run_cmd(command)
 	residualf = outname
 	return residualf

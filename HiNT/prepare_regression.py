@@ -21,16 +21,16 @@ def getGCpercent(gcfile,chrom,resolution):
 	GCdata = pd.read_csv(gcfile, header = 0,sep="\t",index_col=0)
 	GCper = GCdata.loc[chrom:chrom,'5_pct_gc']
 	end = GCdata.loc[chrom:chrom,'3_usercol']
-	length = end[-1]
-	steps = length/resolution
+	length = end[-1:][0]
+	steps = int(length/resolution)
 	GC = []
 	GC += [0]*(steps+1)
 	for i in range(steps):
-		binstart = i*(resolution/1000)
-		binend = (i+1)*(resolution/1000)
+		binstart = i*(int(resolution/1000))
+		binend = (i+1)*(int(resolution/1000))
 		averageGC = np.average(GCper[binstart:binend])
 		GC[i] = averageGC
-	lastbinStart = steps*(resolution/1000)
+	lastbinStart = steps*(int(resolution/1000))
 	lastbinEnd = len(GCper)
 	GC[-1] = np.average(GCper[lastbinStart:lastbinEnd])
 	#print GCper
@@ -81,9 +81,9 @@ def getRestrictionSitesInfo(restrictionSites):
 
 def getFragmentsNumber(sitesInfo, matrixchrom, resolution,chromlength):
 	sites = sitesInfo[matrixchrom]
-	bincounts = [0.0] * (int(chromlength)/int(resolution) + 1)
+	bincounts = [0.0] * (int(int(chromlength)/int(resolution)) + 1)
 	for site in sites:
-		idx = int(site) / int(resolution)
+		idx = int(int(site) / int(resolution))
 		if idx >= len(bincounts):
 			pass
 		else:
@@ -139,7 +139,7 @@ def mergeAllchroms(regressionFileInfo,chroms,outfile,headerfile):
 		else:
 			pass
 	command += '> %s'%outfile
-	print command
+	print(command)
 	run_cmd(command)
 
 def prepareData(name,outdir,referencedir,chromlf,rowSumFilesInfo,binsize,hg19_1k_GCPercent,mappablity_track,restrictionSites):

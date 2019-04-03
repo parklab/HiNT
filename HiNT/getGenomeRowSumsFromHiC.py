@@ -39,7 +39,7 @@ def writeGenomeRowSums(sumInfo,outputname,name,baseIdx):
     outf = open(outputname,'w')
     header=['',name]
     outf.write('\t'.join(header) + '\n')
-    binsIdx = sumInfo.keys()
+    binsIdx = list(sumInfo.keys())
     binsIdx.sort()
     for idx in binsIdx:
         newidx = idx + baseIdx

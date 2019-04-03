@@ -87,10 +87,10 @@ def cnvrun(args):
     #print chroms
     resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome
     #Segmentation step
-    BICseqPath = os.path.join(opts.bicseq, 'NBICseq-seg.pl')
+    BICseqPath = os.path.join(opts.bicseq, 'BICseq2-seg.pl')
     CNVplotPath = resource_filename('HiNT', 'externalScripts/plot.l2r.ms_zoom.R')
-    bicseqOut,outfig,outfig2 = run_BICseq(opts.name,opts.outdir,opts.resolution,resiudalChromFilesInfo,chroms,BICseqPath,CNVplotPath)
-    rowsumsFiles = rowSumFilesInfo.values()
+    bicseqOut,outfig,outfig2 = run_BICseq(opts.name,opts.outdir,opts.resolution,resiudalChromFilesInfo,chroms,BICseqPath,CNVplotPath,opts.genome)
+    rowsumsFiles = list(rowSumFilesInfo.values())
     for rowsumsFile in rowsumsFiles:
         os.remove(rowsumsFile)
     Info("Done! Find your CNV results from %s; %s; and %s ;)"%(bicseqOut,outfig,outfig2))
@@ -111,8 +111,8 @@ def translrun(args):
         from HiNT.hicToMatrix import get_chromInfo,dumpMatrix,hicToMatrix
         matrix1MbInfo = hicToMatrix(opts.matrixfile, 1000, chromlengthf, opts.outdir, opts.name)
         matrix100kbInfo = hicToMatrix(opts.matrixfile, 100, chromlengthf, opts.outdir, opts.name)
-    backgroundMatrix1MbDir = os.path.join(opts.backgroundInterChromMatrixDir,'1Mb')
-    backgroundMatrix100kbDir = os.path.join(opts.backgroundInterChromMatrixDir,'100kb')
+    backgroundMatrix1MbDir = os.path.join(opts.backgroundInterChromMatrixDir,opts.genome,'1Mb')
+    backgroundMatrix100kbDir = os.path.join(opts.backgroundInterChromMatrixDir,opts.genome,'100kb')
     Info("Get matrix Info!")
     background1MbInfo = readBackgroundMatrix(backgroundMatrix1MbDir)
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)

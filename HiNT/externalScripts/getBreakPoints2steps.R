@@ -1,5 +1,5 @@
 Args <- commandArgs()
-print(Args)
+#print(Args)
 divisionMatrixDir = Args[6]
 matrix = Args[7]
 outputfile = Args[8]
@@ -7,7 +7,7 @@ outputfile = Args[8]
 #start_time <- Sys.time()
 
 library('strucchange')
-library(pastecs)
+#library(pastecs)
 library(foreach)
 library(doParallel)
 

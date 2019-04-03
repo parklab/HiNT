@@ -7,7 +7,7 @@ import logging
 error   = logging.critical		# function alias
 warn    = logging.warning
 def Info(infoStr):
-    print "[%s] %s" %(time.strftime('%H:%M:%S'), infoStr)
+    print("[%s] %s" %(time.strftime('%H:%M:%S'), infoStr))
     
 def run_cmd(command):
     subpcall (command, shell = True)

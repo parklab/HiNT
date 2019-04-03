@@ -4,7 +4,7 @@ from scipy.stats import rankdata
 from operator import itemgetter
 
 def readBackgroundMatrix(backgroundMatrixDir):
-    print backgroundMatrixDir
+    print(backgroundMatrixDir)
     backgroundMatrixInfo = {}
     matrices = os.listdir(backgroundMatrixDir)
     for matrix in matrices:

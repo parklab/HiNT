@@ -76,7 +76,7 @@ def is_qualified_clipped(cigar, cutoff_len):
 			try:
 				lenth.append(int(temp))
 			except ValueError:
-				print "Error: ", cigar, temp
+				print("Error: ", cigar, temp)
 			temp=""
 
 	b_hardclip=False
@@ -127,8 +127,8 @@ def singleSide_clip_pos_calculation(m_clip_pos_forward,m_clip_pos_reverse,window
 	#clip_pos_a and clip_pos_b will be validated only when reads that chimeric in chr1~chr8 has such clip pos, and reads that chimeric in chr8~chr1 have such clip position too.
 	clip_Pos_statistics = {}
 
-	forward_keys = m_clip_pos_forward.keys()
-	reverse_keys = m_clip_pos_reverse.keys()
+	forward_keys = list(m_clip_pos_forward.keys())
+	reverse_keys = list(m_clip_pos_reverse.keys())
 	for i in range(len(forward_keys)):
 		posa,posb = forward_keys[i]
 		t = 0
@@ -170,8 +170,9 @@ def singleSide_clip_pos_calculation(m_clip_pos_forward,m_clip_pos_reverse,window
 
 def further_filtering(clip_Pos_statistics,bp1,bp2):
 	#The input clip_pos_dic can be either double validated clip positions or single side validated clip positions
+	resolution = 100000
 	filtered_clip_pos_statistics = {}
-	print clip_Pos_statistics
+	print(clip_Pos_statistics)
 	for cp in clip_Pos_statistics:
 		if ((clip_Pos_statistics[cp][-2] >= 1) and (clip_Pos_statistics[cp][-3] >= 1)) or (clip_Pos_statistics[cp][-1] >= 2):
 			filtered_clip_pos_statistics[cp] = clip_Pos_statistics[cp]
@@ -190,7 +191,7 @@ def getReads(bpInfo,chromSizeInfo,chimericReadPairs,outdir,outname,windowsize=5,
 	outf3 = open(output3,'w')
 	resolution = 100000
 	for chrompair in bpInfo:
-		print chrompair
+		print(chrompair)
 		chrompair_res1 = []
 		chrompair_res2 = []
 		chrompair_res3 = []
@@ -230,7 +231,8 @@ def getReads(bpInfo,chromSizeInfo,chimericReadPairs,outdir,outname,windowsize=5,
 					supportedReads.append(readinfo)
 			clip_pos_statistics = singleSide_clip_pos_calculation(m_clip_pos_forward,m_clip_pos_reverse,window_size=10)
 			filtered_clip_pos_statistics = further_filtering(clip_pos_statistics,bp1,bp2)
-
+			reg_a = '_'.join([str(start),str(end)])
+			reg_b = '_'.join([str(start2),str(end2)])
 			for cp in filtered_clip_pos_statistics:
 				#print chrompair_res
 				pos_a,pos_b = cp
@@ -257,7 +259,7 @@ def getBPfromChimeras(chimericPairsam,restrictionSites,restrictionEnzyme,outdir,
 		os.mkdir(chimericDir)
 	chimerasPrefix = os.path.join(chimericDir,name+'_nonHiC_chimeric')
 	outputChimeras = extrac_nonHiCchimeric(chimericPairsam,restrictionSites,restrictionEnzyme,chimerasPrefix)
-	inf = open(outputChimeras).xreadlines()
+	inf = open(outputChimeras)
 	Infos = []
 	outputChimeraPairs = os.path.join(chimericDir,name+'_nonHiC_chimeric_3dedup.pairs')
 	pool = Pool(16)
@@ -271,7 +273,7 @@ def getBPfromChimeras(chimericPairsam,restrictionSites,restrictionEnzyme,outdir,
 	print(command1)
 	run_cmd(command1)
 	command2 = "%s -f -s2 -d5 -b3 -e4 -u6 -v7 %s"%(pairixpath,sortedChimeras)
-	print command2
+	print(command2)
 	run_cmd(command2)
 	chromInfo = getchromsize(chromlengthf)
 	bpInfo = readFilteredBPs(validbreakpointsf,chromInfo)

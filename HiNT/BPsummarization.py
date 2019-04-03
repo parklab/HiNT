@@ -20,7 +20,7 @@ def mergeCloseBPs(Info):
 	#merge breakpoints that located within a 20bp windown centered from the compared one
 	mergedInfo = {}
 	for chrompair in Info:
-		print chrompair
+		print(chrompair)
 		bps = Info[chrompair]
 		bps_sorted = sorted(bps, key=lambda x:(int(x[2]),int(x[3])))
 		merged_bps = []
@@ -45,7 +45,7 @@ def readchimericInfo(mergedInfo):
 	chimericInfo = {}
 	for k in mergedInfo:
 		chr1,chr2 = k.split('_')
-		values = outInfo[k]
+		values = mergedInfo[k]
 		for value in values:
 			searchregion1,searchregion2,bp1,bp2,supportread1,supportread2,supportreadtotal = value
 			res = [chr1,searchregion1,bp1,chr2,searchregion2,bp2,supportread1,supportread2,supportreadtotal]

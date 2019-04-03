@@ -8,7 +8,7 @@ Only checks intra-chromosomal matrices
 This is very slow particularly for FRAG since it looks at 
 every single matrix entry
 """
-import straw
+from . import straw
 import math
 import argparse
 
@@ -69,8 +69,8 @@ if (not args.frag_only):
                 result2=straw.straw(norm, file2, chr, chr, "BP", res)
                 for i in range(len(result[0])):
                     if (not isclose(result[0][i],result2[0][i]) or not isclose(result[1][i],result2[1][i]) or not isclose(result[2][i], result2[2][i])):
-                        print("Difference at {0} {1} BP {2}".format(norm, chr, res))
-                        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(result[0][i], result[1][i], result[2][i], result2[0][i], result2[1][i], result2[2][i]))
+                        print(("Difference at {0} {1} BP {2}".format(norm, chr, res)))
+                        print(("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(result[0][i], result[1][i], result[2][i], result2[0][i], result2[1][i], result2[2][i])))
 
 if (not args.bp_only):
     for res in fragresolutions:
@@ -80,5 +80,5 @@ if (not args.bp_only):
                 result2=straw.straw(norm, file2, chr, chr, "FRAG", res)
                 for i in range(len(result[0])):
                     if (not isclose(result[0][i],result2[0][i]) or not isclose(result[1][i],result2[1][i]) or not isclose(result[2][i], result2[2][i])):
-                        print("Difference at {0} {1} FRAG {2}".format(norm, chr, res))
-                        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(result[0][i], result[1][i], result[2][i], result2[0][i], result2[1][i], result2[2][i]))
+                        print(("Difference at {0} {1} FRAG {2}".format(norm, chr, res)))
+                        print(("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(result[0][i], result[1][i], result[2][i], result2[0][i], result2[1][i], result2[2][i])))
