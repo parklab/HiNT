@@ -78,14 +78,14 @@ see details and more options
 ```$ hint cnv -h ```
 
 ### HiNT-TL
-HiNT transl: interchromosomal translocations and breakpoints detection from
+HiNT tl: interchromosomal translocations and breakpoints detection from
 Hi-C inter-chromosomal interaction matrices.
 
-```$ hint transl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir```
+```$ hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir```
 
 see details and more options
 
-```$ hint transl -h ```
+```$ hint tl -h ```
 
 ## Output of HiNT
 ### HiNT-PRE output
