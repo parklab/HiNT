@@ -30,9 +30,10 @@ def opt_validate_hintpre(optparser):
                 Info('ERROR: %s is not a valid path'%inputdatas[1])
                 sys.exit(1)
         options.hicdata = inputdatas
-    elif options.inputformat == "bam" and not os.path.isfile(inputdata):
-        Info('ERROR: %s is not a valid path'%inputdatas[0])
-        sys.exit(1)
+    elif options.inputformat == "bam":
+	if os.path.isfile(inputdata):
+        	Info('ERROR: %s is not a valid path'%inputdatas[0])
+        	sys.exit(1)
     else:
         Info('ERROR: choose a valid format for input data, fastq or bam')
         sys.exit(1)
