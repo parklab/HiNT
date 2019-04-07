@@ -1,0 +1,11 @@
+include README.md
+exclude install.sh*
+
+graft HiNT/externalScripts
+
+global-exclude __pycache__/*
+global-exclude *.pyd
+global-exclude *.pyc
+global-exclude .git*
+global-exclude .deps/*
+global-exclude .DS_Store

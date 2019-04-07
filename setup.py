@@ -43,7 +43,7 @@ def main():
         sys.stderr.write("CRITICAL: Python version must be greater than or equal to 3.5!\n")
         sys.exit(1)
     setup(name="HiNT-Package",
-          version="2.0.4",
+          version="2.0.7",
           description="HiNT -- HiC for copy number vairations and translocations detection ",
           long_description=long_description,
           long_description_content_type='text/markdown',
@@ -52,7 +52,8 @@ def main():
           package_dir={'HiNT' : 'HiNT'},
           install_requires = requires,
           setup_requires = requires,
-          packages=['HiNT'],
+          #packages=['HiNT'],
+          packages=find_packages(),
           package_data={'HiNT':['externalScripts/*']},
           include_package_data=True,
           scripts=['bin/hint'],
