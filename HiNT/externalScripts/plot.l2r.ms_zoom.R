@@ -25,7 +25,7 @@ xy          = TRUE
 k           = 5 # integer width of median window, must be odd
 
 
-library("Cairo")
+#library("Cairo")
 
 chrFromSpecies <- function(species) {
     # Returns chromosome numbers based on species
@@ -208,7 +208,7 @@ plotRatioNSeg <- function(seg.file, bins, segments, sampleName=NULL, bin.size, l
     if (save) {
         seg.dir <- dirname(seg.file)
         graphList[[sampleName]] <- file.path(seg.dir, paste(c(head(strsplit(basename(seg.file), ".", fixed=T)[[1]], n=-1), "l2r.pdf"), collapse="."))
-        CairoPDF(file = graphList[[sampleName]], width = 18, height = 5)
+        pdf(file = graphList[[sampleName]], width = 18, height = 5)
     }
     # Title generation
     main <- paste(sampleName, " ( b", bin.size, " : k", k, " : l", lamda,
