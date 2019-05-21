@@ -17,8 +17,8 @@ def dumpMatrix(chrom1, chrom2, resolution, hicfile, chromInfo, outputMatrixFile)
     chrom1length = chromInfo[chrom1]
     chrom2length = chromInfo[chrom2]
     binsize = resolution*1000
-    binnumber1 = np.divide(chrom1length,binsize) + 1
-    binnumber2 = np.divide(chrom2length,binsize) + 1
+    binnumber1 = int(np.divide(chrom1length,binsize)) + 1
+    binnumber2 = int(np.divide(chrom2length,binsize)) + 1
     chr1 = chrom1.lstrip('chr')
     chr2 = chrom2.lstrip('chr')
     result = straw('KR', hicfile, str(chr1), str(chr2), 'BP', binsize)
