@@ -124,7 +124,7 @@ def add_cnv_parser(subparsers):
     cnvparser.add_argument("--refdir",dest="referencedir",type=str,required = True,
                          help="the reference directory that downloaded from dropbox dropbox. (https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0.)")
     cnvparser.add_argument("--bicseq",dest="bicseq",type=str,required = True, help="/path/to/bicseqDir/")
-    cnvparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer","sparse","dense"), default="cooler",
+    cnvparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer"), default="cooler",
                          help="Format for the output contact matrix, DEFAULT: cooler")
     cnvparser.add_argument("-e","--enzyme",dest="enzyme",choices = ("MboI","HindIII","DpnII"), default="MboI",required = False, help="enzyme used for the Hi-C experiments, will be used to calculate enzyme sites")
     cnvparser.add_argument("-r","--resolution",dest="resolution",type=int,required = False, default=50,
@@ -154,7 +154,7 @@ def add_translocation_parser(subparsers):
                          help="the reference directory that downloaded from dropbox dropbox. (https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0.)")
     tranlparser.add_argument("-e","--enzyme",dest="enzyme",type=str,required = False, choices = ("DpnII","MboI","HindIII"), default="MboI",
                          help="Enzyme used in Hi-C experiment, DEFAULT: MboI")
-    tranlparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer","sparse","dense"), default="cooler",
+    tranlparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer"), default="cooler",
                          help="Format for the output contact matrix, DEFAULT: cooler")
     tranlparser.add_argument("--ppath",dest="pairixpath",type=str,required = True,
                          help="Path for pairix, use 'which pairix' to get the path")
