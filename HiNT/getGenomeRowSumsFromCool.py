@@ -38,38 +38,6 @@ def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
 	dfrowsums = pds.DataFrame(genomeRowSum,columns=[name],index=allbins.index)
 	dfrowsums.to_csv(outputname,sep="\t")
 
-def calRowsums(params):
-	coolfile,binsInfo,targetchrom,chunksize,name,outputname = params
-	s,e = binsInfo[targetchrom]
-	length = e - s + 1
-	RowSums = np.zeros((length,1))
-	steps = int(length/chunksize)
-	#print(steps)
-	rowsums = np.array([])
-	if steps > 0:
-		for j in range(0,steps-1):
-			#print j
-			start = s + j*chunksize
-			end = s + (j+1)*chunksize
-			#print start,end
-			rowSum = getSumPerChunk(coolfile,start,end)
-			rowsums = np.append(rowsums,rowSum)
-		start = s + chunksize*(steps-1)
-		if start > e:
-			pass
-		else:
-			end = e
-			rowSum = getSumPerChunk(coolfile,start,end+1)
-			rowsums = np.append(rowsums,rowSum)
-		rowsums = np.reshape(rowsums,(len(rowsums),1))
-	else:
-		rowsums = getSumPerChunk(coolfile,s,e+1)
-		rowsums = np.reshape(rowsums,(len(rowsums),1))
-	genomeRowSum = RowSums + rowsums
-	#print(np.shape(genomeRowSum))
-	writeGenomeRowSums(coolfile,genomeRowSum,targetchrom,outputname,name)
-	outInfo = targetchrom + '\t' + outputname +'\n'
-	return outInfo
 
 def getallChromsRowSums(coolpath,name,outputdir,resolution):
 	coolfile = cooler.Cooler(coolpath)

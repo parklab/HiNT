@@ -67,12 +67,12 @@ def prerun(args):
 
 def cnvrun(args):
     opts = opt_validate_hintcnv(args)
-    from HiNT.prepare_regression import get_chromInfo,getGCpercent,getmappability,getRestrictionSitesInfo,getFragmentsNumber,Regression,getnonzeros,mergeAllchroms,prepareData
+    from HiNT.prepare_regression import get_chromInfo,getSumPerChrom,getmappability,getRestrictionSitesInfo,getFragmentsNumber,Regression,getnonzeros,mergeAllchroms,prepareData
     from HiNT.DoRegressionAllchroms import write_Rscript,DoRegression,sepResidualsByChrom,calculateResiduals
     from HiNT.doBICseq import makebinFiles,BICseqPrepare,run_BICseq
     chromlf = os.path.join(opts.referencedir,'%s.len'%opts.genome)
     if opts.format == 'cooler':
-        from HiNT.getGenomeRowSumsFromCool import getBins,getSumPerChunk,writeGenomeRowSums,calRowsums,getallChromsRowSums
+        from HiNT.getGenomeRowSumsFromCool import getBins,getSumPerChrom,writeGenomeRowSums,getallChromsRowSums
         rowSumFilesInfo = getallChromsRowSums(opts.matrixfile,opts.name,opts.outdir,opts.resolution,opts.threads) #Calculate rowsums
     if opts.format == 'juicer':
         from HiNT.getGenomeRowSumsFromHiC import get_chromInfo,getSumPerChrom,writeGenomeRowSums,getGenomeRowSums
