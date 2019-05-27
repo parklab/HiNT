@@ -69,7 +69,7 @@ def opt_validate_hintcnv(optparser):
     """
 
     options = optparser.parse_args()
-    if not os.path.isfile(options.matrixfile):
+    if not os.path.isfile(options.matrixfile.split('::')[0]):
         optparser.print_help()
         Info('ERROR: path to the matrixfile is not valid.')
         sys.exit(1)
@@ -116,7 +116,7 @@ def opt_validate_hinttransl(optparser):
         sys.exit(1)
     if options.format == "cooler":
         options.matrixfile = options.matrixfile.split(',')
-        if len(options.matrixfile) != 2 or not os.path.isfile(options.matrixfile[0]) or not os.path.isfile(options.matrixfile[1]):
+        if len(options.matrixfile) != 2 or not os.path.isfile(options.matrixfile[0].split('::')[0]) or not os.path.isfile(options.matrixfile[1].split('::')[0]):
             optparser.print_help()
             Info('ERROR: path to the matrixfile is not valid.')
             sys.exit(1)

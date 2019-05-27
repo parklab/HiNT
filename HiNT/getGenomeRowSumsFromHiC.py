@@ -29,9 +29,14 @@ def getSumPerChrom(i, j, hicfile, binsize, chroms, chromInfo, sumInfo):
     chrom1length = chromInfo[chrom1]
 
     for n in sumInfo:
-        idx = np.where(xs == n)
+        if i != j:
+            idx = np.where(xs == n)
+        else:
+            idx1 = np.where(xs == n)
+            idx2 = np.where(ys == n)
+            idx = np.unique(np.concatenate((idx1,idx2), axis=1))
         nvalues = values[idx]
-        nsum = np.sum(nvalues)
+        nsum = np.nansum(nvalues)
         sumInfo[n] += nsum
     return sumInfo
 
@@ -57,7 +62,7 @@ def getGenomeRowSums(resolution, hicfile, chromlf, outputdir,name):
     for i in range(len(chroms)-2):
         sumInfo = {}
         chrom1length = chromInfo[chroms[i]]
-        binnumber = int(chrom1length/binsize) + 1
+        binnumber = int(chrom1length/binsize) + 2
         for n in range(binnumber):
             sumInfo[n] = 0
         for j in range(len(chroms)-2):

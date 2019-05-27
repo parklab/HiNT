@@ -74,7 +74,11 @@ see details and more options
 ### HiNT-CNV
 HiNT cnv: prediction of copy number information, as well as segmentation from Hi-C.
 
-```$ hint cnv -m contactMatrix.mcool -f cooler -r 50 -g hg19 -n test -o /path/to/outputDir```
+```$ hint cnv -m contactMatrix.cool -f cooler --refdir /path/to/refDir/hg19 -r 50 -g hg19 -n test -o /path/to/outputDir```
+
+```$ hint cnv -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/50000 -f cooler --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
+
+```hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
 see details and more options
 
@@ -85,6 +89,8 @@ HiNT tl: interchromosomal translocations and breakpoints detection from
 Hi-C inter-chromosomal interaction matrices.
 
 ```$ hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir```
+
+```$ hint tl -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/1000000,/path/to/4DNFIS6HAUPP.mcool::/resolutions/100000 -f cooler --refdir /path/to/refDir/hg38 --backdir /path/to/backgroundMatrices/ -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12```
 
 see details and more options
 

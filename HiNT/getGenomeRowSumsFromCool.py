@@ -3,8 +3,8 @@ import cooler
 import numpy as np
 import pandas as pds
 import scipy.sparse as sps
-from multiprocessing import Pool
-import argparse
+#from multiprocessing import Pool
+#import argparse
 
 def getBins(coolfile):
 	binsInfo = {}
@@ -15,31 +15,20 @@ def getBins(coolfile):
 		chromend = idxarray[0][-1]
 		binsInfo[chrom] = [chromstart,chromend]
 	#print binsInfo
-	return chroms,binsInfo
+	return binsInfo
 
-def getSumPerChunk(coolfile,start,end):
-	length = end - start
-	rowSums = np.zeros((length,1))
-	#print np.shape(rowSums)
-	binNum = np.shape(coolfile.bins())[0]
-	size = 100
-	steps = int(binNum/size)
-	for s in range(steps):
-		start2 = s*size
-		end2 = (s+1)*size
-		matrix = coolfile.matrix(balance=False)[start:end, start2:end2]
-		rowSum = np.sum(matrix, axis=1)
-		rowSum = np.reshape(rowSum, (len(rowSum),1))
-		rowSums += rowSum
-	if steps*size < binNum:
-		lastmatrix = coolfile.matrix(balance=False)[start:end, steps*size:]
-		rowSum = np.sum(lastmatrix, axis=1)
-		rowSum = np.reshape(rowSum, (len(rowSum),1))
-		rowSums += rowSum
-	else:
-		pass
-
-	return rowSums
+def getSumPerChrom(binsInfo,chroms,chrom1,coolfile,outputname):
+	binstart1,binend1 = binsInfo[chrom1]
+	chromRowsums = np.zeros((binend1-binstart1+1,1))
+	for j in range(len(chroms)):
+		chrom2 = chroms[j]
+		print(chrom1,chrom2)
+		binstart2,binend2 = binsInfo[chrom2]
+		matrix = coolfile.matrix(balance=False)[binstart1:(binend1+1), binstart2:(binend2+1)]
+		rowSum = np.nansum(matrix, axis=1)
+		rowSum = np.reshape(rowSum,(binend1-binstart1+1,1))
+		chromRowsums += rowSum
+	writeGenomeRowSums(coolfile,chromRowsums,chrom1,outputname,name)
 
 def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
 	print("Writing rowsums of %s!"%chrom)
@@ -82,22 +71,21 @@ def calRowsums(params):
 	outInfo = targetchrom + '\t' + outputname +'\n'
 	return outInfo
 
-def getallChromsRowSums(coolpath,name,outputdir,resolution,threads):
-	chunksize=int(1000/int(resolution))
+def getallChromsRowSums(coolpath,name,outputdir,resolution):
 	coolfile = cooler.Cooler(coolpath)
-	chroms,binsInfo = getBins(coolfile)
+	binsInfo = getBins(coolfile)
+	chroms = binsInfo.keys()
 	rowSumFilesInfo = {}
-
-	allparamsInfo = []
+	chroms = list(binsInfo.keys())
+	excludechroms = ['chrY','chrM','Y','M']
+	for excludechrom in excludechroms:
+		if excludechrom in chroms:
+			chroms.remove(excludechrom)
+	print(chroms)
 	for i,targetchrom in enumerate(chroms):
 		outputname = os.path.join(outputdir,name + '_%s_%skb_GenomeRowSums.txt'%(targetchrom,str(resolution)))
-		allparamsInfo.append([coolfile,binsInfo,targetchrom,chunksize,name,outputname])
 		rowSumFilesInfo[targetchrom] = outputname
-	results = []
-	p = Pool(threads)
-	result = p.map_async(calRowsums, allparamsInfo, callback=results.append)
-	p.close()
-	p.join()
-	#print results
+		getSumPerChrom(binsInfo,chroms,targetchrom,coolfile,outputname)
 
+	#print results
 	return rowSumFilesInfo

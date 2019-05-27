@@ -40,7 +40,7 @@ def hicToMatrix(hicfile, resolution, chromlf, outputdir,name):
             outmatrixdir = os.path.join(outputdir,"InterMap_matrix")
             if not os.path.isdir(outmatrixdir):
                 os.mkdir(outmatrixdir)
-            outputname = os.path.join(outmatrixdir,name + '_%skb_%s_%s_InterMap_matrix.txt'%(resolution,chrom1,chrom2))
+            outputname = os.path.join(outmatrixdir,name + '_%skb_%s_%s_InterMap_matrix.txt'%(int(resolution),chrom1,chrom2))
             dumpMatrix(chrom1, chrom2, resolution, hicfile, chromInfo,outputname)
             MatrixInfo[chrom1+'_'+chrom2] = outputname
     return MatrixInfo
