@@ -17,7 +17,7 @@ def getBins(coolfile):
 	#print binsInfo
 	return binsInfo
 
-def getSumPerChrom(binsInfo,chroms,chrom1,coolfile,outputname):
+def getSumPerChrom(binsInfo,chroms,chrom1,coolfile,outputname,name):
 	binstart1,binend1 = binsInfo[chrom1]
 	chromRowsums = np.zeros((binend1-binstart1+1,1))
 	for j in range(len(chroms)):
@@ -53,7 +53,7 @@ def getallChromsRowSums(coolpath,name,outputdir,resolution):
 	for i,targetchrom in enumerate(chroms):
 		outputname = os.path.join(outputdir,name + '_%s_%skb_GenomeRowSums.txt'%(targetchrom,str(resolution)))
 		rowSumFilesInfo[targetchrom] = outputname
-		getSumPerChrom(binsInfo,chroms,targetchrom,coolfile,outputname)
+		getSumPerChrom(binsInfo,chroms,targetchrom,coolfile,outputname,name)
 
 	#print results
 	return rowSumFilesInfo

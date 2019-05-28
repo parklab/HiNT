@@ -62,7 +62,7 @@ def getGenomeRowSums(resolution, hicfile, chromlf, outputdir,name):
     for i in range(len(chroms)-2):
         sumInfo = {}
         chrom1length = chromInfo[chroms[i]]
-        binnumber = int(chrom1length/binsize) + 2
+        binnumber = int(chrom1length/binsize) + 1
         for n in range(binnumber):
             sumInfo[n] = 0
         for j in range(len(chroms)-2):
