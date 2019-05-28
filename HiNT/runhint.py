@@ -67,7 +67,7 @@ def prerun(args):
 
 def cnvrun(args):
     opts = opt_validate_hintcnv(args)
-    from HiNT.prepare_regression import get_chromInfo,getmappability,getRestrictionSitesInfo,getFragmentsNumber,Regression,getnonzeros,mergeAllchroms,prepareData
+    from HiNT.prepare_regression import get_chromInfo,getGCpercent,getmappability,getRestrictionSitesInfo,getFragmentsNumber,Regression,getnonzeros,mergeAllchroms,prepareData
     from HiNT.DoRegressionAllchroms import write_Rscript,DoRegression,sepResidualsByChrom,calculateResiduals
     from HiNT.doBICseq import makebinFiles,BICseqPrepare,run_BICseq
     chromlf = os.path.join(opts.referencedir,'%s.len'%opts.genome)
