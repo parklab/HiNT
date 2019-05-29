@@ -44,7 +44,7 @@ Other dependencies
 
 * Method2: Install using conda (highly recommend)
 
-	``` $ conda install hint```
+	``` $ conda install -c su hint```
 
 * Method3: Install manually 
   1. Install HiNT dependencies
@@ -78,7 +78,7 @@ HiNT cnv: prediction of copy number information, as well as segmentation from Hi
 
 ```$ hint cnv -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/50000 -f cooler --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
-```hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
+```$ hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
 see details and more options
 
