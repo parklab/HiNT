@@ -67,7 +67,7 @@ Other dependencies
 ### HiNT-PRE
 HiNT pre: Preprocessing Hi-C data. HiNT pre does alignment, contact matrix creation and normalization in one command line.
 
-```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairsampath /path/to/pairsamtools```
+```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex/hg19/hg19.fa --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairsampath /path/to/pairsamtools```
 
 see details and more options
 
@@ -90,11 +90,11 @@ see details and more options
 HiNT tl: interchromosomal translocations and breakpoints detection from
 Hi-C inter-chromosomal interaction matrices.
 
-```$ hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir```
+```$ hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam --refdir /path/to/refDir/hg19 --backdir /path/to/backgroundMatrices/hg19 -f cooler -g hg19 -n test -o /path/to/outputDir```
 
-```$ hint tl -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/1000000,/path/to/4DNFIS6HAUPP.mcool::/resolutions/100000 -f cooler --refdir /path/to/refDir/hg38 --backdir /path/to/backgroundMatrices/ -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12```
+```$ hint tl -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/1000000,/path/to/4DNFIS6HAUPP.mcool::/resolutions/100000 -f cooler --refdir /path/to/refDir/hg38 --backdir /path/to/backgroundMatrices/hg38 -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12```
 
-```$ hint tl -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refData/hg38 --backdir /path/to/backgroundMatrices/ -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12 -o HiNTtransl_juicerOUTPUT```
+```$ hint tl -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refData/hg38 --backdir /path/to/backgroundMatrices/hg38 -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12 -o HiNTtransl_juicerOUTPUT```
 
 see details and more options
 
