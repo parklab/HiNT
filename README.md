@@ -93,6 +93,8 @@ Hi-C inter-chromosomal interaction matrices.
 
 ```$ hint tl -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/1000000,/path/to/4DNFIS6HAUPP.mcool::/resolutions/100000 -f cooler --refdir /path/to/refDir/hg38 --backdir /path/to/backgroundMatrices/ -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12```
 
+```$ hint tl -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refData/hg38 --backdir /path/to/backgroundMatrices/ -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12 -o HiNTtransl_juicerOUTPUT```
+
 see details and more options
 
 ```$ hint tl -h ```
