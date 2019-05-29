@@ -33,7 +33,7 @@ Perl
 Other dependencies
 
 1. [samtools](http://www.htslib.org/doc/) (1.3.1+)
-2. [BIC-seq2](http://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2/BICseq2-seg_v0.7.3.tar.gz) (0.7.3) ! This is optional: if you don't want to run HiNT-CNV, you don't need this package. No need to install, just download BICseq2, unzip it, and give the path where you stored to HiNT.
+2. [BIC-seq2](http://www.math.pku.edu.cn/teachers/xirb/downloads/software/BICseq2/BICseq2/BICseq2-seg_v0.7.3.tar.gz) (0.7.3) ! This is optional: if you don't want to run HiNT-CNV, you don't need this package. [Download BICseq2, unzip it, and give the path of BICseq2-seg_v0.7.3 (/path/to/BICseq2-seg_v0.7.3)].
 3. [bwa](https://sourceforge.net/projects/bio-bwa/files/) (0.7.16+) ! This is optional: required only when your input is fastq
 4. [tabix](https://sourceforge.net/projects/samtools/files/tabix/) (0.2.6)
 
