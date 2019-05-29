@@ -54,7 +54,7 @@ Other dependencies
 
 *** Type ```$ hint``` to test if HiNT successfully installed
 
-### [Download](https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0) reference files used in HiNT
+### Download reference files used in HiNT [HERE](https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0)
 
 1. Download HiNT references [HERE](https://www.dropbox.com/sh/qas48d7409t2syz/AACk5G2ngZ0vylLXsLFZXif_a?dl=0). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
 2. Download HiNT background matrices [HERE](https://www.dropbox.com/sh/fyxx9u5g5vn57ez/AAAx-DtByKaU6HvTYyEUvCzRa?dl=0). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
