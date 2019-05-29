@@ -38,13 +38,14 @@ Other dependencies
 4. [tabix](https://sourceforge.net/projects/samtools/files/tabix/) (0.2.6)
 
 ### Install HiNT
-* Method1: Install from PyPI using pip.
 
-	``` $ pip install HiNT-Packages```
-
-* Method2: Install using conda (highly recommend)
+* Method1: Install using conda (highly recommend)
 
 	``` $ conda install -c su hint```
+	
+* Method2: Install from PyPI using pip.
+
+	``` $ pip install HiNT-Packages```
 
 * Method3: Install manually 
   1. Install HiNT dependencies
