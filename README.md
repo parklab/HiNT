@@ -39,7 +39,7 @@ Other dependencies
 
 ### Install HiNT
 
-* Method1: Install using conda (highly recommend)
+* Method1: Install using conda (highly recommended)
 
 	``` $ conda install -c su hint=2.1.7```
 	
@@ -51,6 +51,14 @@ Other dependencies
   1. Install HiNT dependencies
   2. Download HiNT ```git clone https://github.com/parklab/HiNT.git```
   3. Go to HiNT directory, install it by ```$ python setup.py install ```
+  
+### Run HiNT in a Docker container (highly recommended)
+
+``` $ docker pull suwangbio/hint```
+
+``` $ docker run suwangbio/hint hint```
+
+see details from [docker hub](https://hub.docker.com/r/suwangbio/hint) 
 
 *** Type ```$ hint``` to test if HiNT successfully installed
 
