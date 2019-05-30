@@ -60,7 +60,7 @@ Other dependencies
 
 	``` $ docker run suwangbio/hint hint```
 
-	See details from [docker hub](https://hub.docker.com/r/suwangbio/hint) 
+	See details of the usage on HiNT page at [docker hub](https://hub.docker.com/r/suwangbio/hint) 
 
 ### Download reference files used in HiNT [HERE](https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0)
 
