@@ -52,15 +52,15 @@ Other dependencies
   2. Download HiNT ```git clone https://github.com/parklab/HiNT.git```
   3. Go to HiNT directory, install it by ```$ python setup.py install ```
   
-### Run HiNT in a Docker container (highly recommended)
+*** Type ```$ hint``` to test if HiNT successfully installed
+
+* Method 4: Run HiNT in a Docker container (highly recommended)
 
 ``` $ docker pull suwangbio/hint```
 
 ``` $ docker run suwangbio/hint hint```
 
 see details from [docker hub](https://hub.docker.com/r/suwangbio/hint) 
-
-*** Type ```$ hint``` to test if HiNT successfully installed
 
 ### Download reference files used in HiNT [HERE](https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0)
 
