@@ -56,11 +56,11 @@ Other dependencies
 
 * Method 4: Run HiNT in a Docker container (highly recommended)
 
-``` $ docker pull suwangbio/hint```
+	``` $ docker pull suwangbio/hint```
 
-``` $ docker run suwangbio/hint hint```
+	``` $ docker run suwangbio/hint hint```
 
-see details from [docker hub](https://hub.docker.com/r/suwangbio/hint) 
+	See details from [docker hub](https://hub.docker.com/r/suwangbio/hint) 
 
 ### Download reference files used in HiNT [HERE](https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0)
 
