@@ -52,7 +52,7 @@ Other dependencies
   2. Download HiNT ```git clone https://github.com/parklab/HiNT.git```
   3. Go to HiNT directory, install it by ```$ python setup.py install ```
   
-*** Type ```$ hint``` to test if HiNT successfully installed
+  *** Type ```$ hint``` to test if HiNT successfully installed
 
 * Method 4: Run HiNT in a Docker container (highly recommended)
 
