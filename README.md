@@ -67,9 +67,11 @@ Other dependencies
 ### HiNT-PRE
 HiNT pre: Preprocessing Hi-C data. HiNT pre does alignment, contact matrix creation and normalization in one command line.
 
-```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex/hg19/hg19.fa --refdir /path/to/refData/hg19 --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairtoolspath /path/to/pairsamtools --samtoolspath /path/to/samtools --coolerpath /path/to/cooler```
+```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex/hg19/hg19.fa --refdir /path/to/refData/hg19 --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairtoolspath /path/to/pairtools --samtoolspath /path/to/samtools --coolerpath /path/to/cooler```
 
-```$ hint pre -d /path/to/test.bam --refdir /path/to/refData/hg19 --informat bam --outformat juicer -g hg19 -n test -o /path/to/outputdir --pairtoolspath /path/to/pairsamtools --samtoolspath /path/to/samtools --juicerpath /path/to/juicer_tools.1.8.9_jcuda.0.8.jar```
+```$ hint pre -d /path/to/test.bam --refdir /path/to/refData/hg19 --informat bam --outformat juicer -g hg19 -n test -o /path/to/outputdir --pairtoolspath /path/to/pairtools --samtoolspath /path/to/samtools --juicerpath /path/to/juicer_tools.1.8.9_jcuda.0.8.jar```
+
+use ```$ which samtools ``` ```$ which pairtools ``` ```$ which cooler ``` to get the absolute path of these tools, and ```/path/to/juicer_tools.1.8.9_jcuda.0.8.jar``` should be the path where you store this file
 
 see details and more options
 
@@ -84,6 +86,8 @@ HiNT cnv: prediction of copy number information, as well as segmentation from Hi
 
 ```$ hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
+```/path/to/BICseq2-seg_v0.7.3``` should be the path where you store this package
+
 see details and more options
 
 ```$ hint cnv -h ```
@@ -97,6 +101,8 @@ Hi-C inter-chromosomal interaction matrices.
 ```$ hint tl -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/1000000,/path/to/4DNFIS6HAUPP.mcool::/resolutions/100000 -f cooler --refdir /path/to/refDir/hg38 --backdir /path/to/backgroundMatrices/hg38 -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12```
 
 ```$ hint tl -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refData/hg38 --backdir /path/to/backgroundMatrices/hg38 -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12 -o HiNTtransl_juicerOUTPUT```
+
+use ```$ which pairix ``` to get the absolute path of pairix
 
 see details and more options
 
