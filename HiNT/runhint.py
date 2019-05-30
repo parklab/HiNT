@@ -111,8 +111,8 @@ def translrun(args):
         from HiNT.hicToMatrix import get_chromInfo,dumpMatrix,hicToMatrix
         matrix1MbInfo = hicToMatrix(opts.matrixfile, 1000, chromlengthf, opts.outdir, opts.name)
         matrix100kbInfo = hicToMatrix(opts.matrixfile, 100, chromlengthf, opts.outdir, opts.name)
-    backgroundMatrix1MbDir = os.path.join(opts.backgroundInterChromMatrixDir,opts.genome,'1Mb')
-    backgroundMatrix100kbDir = os.path.join(opts.backgroundInterChromMatrixDir,opts.genome,'100kb')
+    backgroundMatrix1MbDir = os.path.join(opts.backgroundInterChromMatrixDir,'1Mb')
+    backgroundMatrix100kbDir = os.path.join(opts.backgroundInterChromMatrixDir,'100kb')
     Info("Get matrix Info!")
     background1MbInfo = readBackgroundMatrix(backgroundMatrix1MbDir)
     background100kbInfo = readBackgroundMatrix(backgroundMatrix100kbDir)

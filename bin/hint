@@ -35,7 +35,7 @@ HiNT for translocations detection
 
 This code is free software; you can redistribute it and/or modify it.
 
-@version: $2.0.9$
+@version: $2.1.7$
 @author: Su Wang
 @contact: wangsu0623@gmail.com
 """
@@ -52,7 +52,7 @@ def prepare_argparser():
     epilog = "For command line options of each command, type: %(prog)s COMMAND -h"
 
     argparser = ap.ArgumentParser( description = description, epilog = epilog) #, usage = usage
-    HiNT_VERSION = '2.0.9'
+    HiNT_VERSION = '2.1.7'
     argparser.add_argument("--version", action="version", version="%(prog)s " + HiNT_VERSION)
     subparsers = argparser.add_subparsers( help = "sub-command help", dest = 'subcommand_name' ) #help="sub-command help"
 
@@ -73,8 +73,8 @@ def add_hicprocessing_parser(subparsers):
     """
     preparser = subparsers.add_parser("pre", help="HiNT for Hi-C data preprocessing: raw Hi-C --> HiC contact matrix and chimeric read pairs",
                                         description="HiNT-pre: Preprocessing Hi-C data, alignment, create contact matrices, and normalization.\n\
-                                        EXAMPLE: hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz --refdir /path/to/HiNT_reference_dir/ -i /path/to/bwaIndex --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir \n\
-                                        -- pairsampath /path/to/pairsamtools")
+                                        EXAMPLE: hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz --refdir /path/to/HiNT_reference_dir/hg19/ -i /path/to/bwaIndex/hg19/hg19.fa --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir \n\
+                                        -- pairtoolspath /path/to/pairtools")
     #Main Arguments
     preparser.add_argument("-d","--data",dest="hicdata",type=str,required = True,
                          help="Hi-C raw data with fastq format, two mates seperate with a comma ',', or bam file after alignment.")
@@ -115,7 +115,7 @@ def add_cnv_parser(subparsers):
     """
     cnvparser = subparsers.add_parser('cnv', help = "Copy Number Vairations detection from Hi-C",
                                         description="HiNT cnv: prediction of copy number information, as well as segmentation from Hi-C.\n\
-                                        EXAMPLE: hint cnv -m contactMatrix.mcool -f cooler --refdir /path/to/HiNT_reference_dir/ -r 50 -g hg19 -n test -o /path/to/outputDir")
+                                        EXAMPLE: hint cnv -m contactMatrix.mcool -f cooler --refdir /path/to/HiNT_reference_dir/hg19 -r 50 --bicseq /path/to/BICseq2-seg_v0.7.3 -g hg19 -n test -o /path/to/outputDir")
 
     #Main Arguments
     cnvparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
@@ -145,7 +145,7 @@ def add_translocation_parser(subparsers):
     """
     tranlparser = subparsers.add_parser("tl", help="Identify translocated chromosomal pairs, and detect the breakpoints in 100kb as well as 1bp resolution",
                                         description="HiNT-tl: interchromosomal translocations and breakpoints detection from Hi-C inter-chromosomal interaction matrices.\n\
-                                        EXAMPLE: hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool --refdir /path/to/HiNT_reference_dir/ -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir")
+                                        EXAMPLE: hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool --refdir /path/to/HiNT_reference_dir/hg19 --backdir /path/to/backgroundMatrices/hg19 -c chimericReads.pairsam -f cooler -g hg19 -n test -o /path/to/outputDir")
     #Main Arguments
     tranlparser.add_argument("-m","--matrixfile",dest="matrixfile",type=str, required = True,
                          help="The matrix compressed file contains 1Mb and 100kb resolutions Hi-C contact matrix (.hic format), or 1Mb and 100kb resolution files seperate with ',', like /path/to/data_1Mb.cool,/path/to/data_100kb.cool\n\

@@ -67,7 +67,9 @@ Other dependencies
 ### HiNT-PRE
 HiNT pre: Preprocessing Hi-C data. HiNT pre does alignment, contact matrix creation and normalization in one command line.
 
-```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex/hg19/hg19.fa --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairsampath /path/to/pairsamtools```
+```$ hint pre -d /path/to/hic_1.fastq.gz,/path/to/hic_2.fastq.gz -i /path/to/bwaIndex/hg19/hg19.fa --refdir /path/to/refData/hg19 --informat fastq --outformat cooler -g hg19 -n test -o /path/to/outputdir --pairtoolspath /path/to/pairsamtools --samtoolspath /path/to/samtools --coolerpath /path/to/cooler```
+
+```$ hint pre -d /path/to/test.bam --refdir /path/to/refData/hg19 --informat bam --outformat juicer -g hg19 -n test -o /path/to/outputdir --pairtoolspath /path/to/pairsamtools --samtoolspath /path/to/samtools --juicerpath /path/to/juicer_tools.1.8.9_jcuda.0.8.jar```
 
 see details and more options
 
@@ -76,7 +78,7 @@ see details and more options
 ### HiNT-CNV
 HiNT cnv: prediction of copy number information, as well as segmentation from Hi-C.
 
-```$ hint cnv -m contactMatrix.cool -f cooler --refdir /path/to/refDir/hg19 -r 50 -g hg19 -n test -o /path/to/outputDir```
+```$ hint cnv -m contactMatrix.cool -f cooler --refdir /path/to/refDir/hg19 -r 50 -g hg19 -n test -o /path/to/outputDir --bicseq /path/to/BICseq2-seg_v0.7.3 -e MboI```
 
 ```$ hint cnv -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/50000 -f cooler --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
@@ -90,7 +92,7 @@ see details and more options
 HiNT tl: interchromosomal translocations and breakpoints detection from
 Hi-C inter-chromosomal interaction matrices.
 
-```$ hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool -c chimericReads.pairsam --refdir /path/to/refDir/hg19 --backdir /path/to/backgroundMatrices/hg19 -f cooler -g hg19 -n test -o /path/to/outputDir```
+```$ hint tl -m /path/to/data_1Mb.cool,/path/to/data_100kb.cool --chimeric /path/to/test_chimeric.sorted.pairsam.gz --refdir /path/to/refDir/hg19 --backdir /path/to/backgroundMatrices/hg19 --ppath /path/to/pairix -f cooler -g hg19 -n test -o /path/to/outputDir```
 
 ```$ hint tl -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/1000000,/path/to/4DNFIS6HAUPP.mcool::/resolutions/100000 -f cooler --refdir /path/to/refDir/hg38 --backdir /path/to/backgroundMatrices/hg38 -g hg38 -n 4DNFICSTCJQZ -c 0.05 --ppath /path/to/pairix -p 12```
 
