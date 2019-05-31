@@ -42,6 +42,10 @@ Other dependencies
 * Method1: Install using conda (highly recommended)
 
 	``` $ conda install -c su hint=2.1.7```
+
+	or
+
+	``` $ conda install hint```
 	
 * Method2: Install from PyPI using pip.
 
