@@ -26,7 +26,7 @@ with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 requires = [
 'h5py>=2.8.0',
 'numpy>=1.16.1',
-'cooler>=0.8.2',
+'cooler==0.8.3',
 'pypairix>=0.3.0',
 'pairtools>=0.2.2',
 'scipy>=1.0.1',
@@ -43,7 +43,7 @@ def main():
         sys.stderr.write("CRITICAL: Python version must be greater than or equal to 3.5!\n")
         sys.exit(1)
     setup(name="HiNT-Package",
-          version="2.1.7",
+          version="2.1.9",
           description="HiNT -- HiC for copy number vairations and translocations detection ",
           long_description=long_description,
           long_description_content_type='text/markdown',

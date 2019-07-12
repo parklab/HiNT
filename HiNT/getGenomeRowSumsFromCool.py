@@ -38,7 +38,6 @@ def writeGenomeRowSums(coolfile,transRowSum,chrom,outputname,name):
 	dfrowsums = pds.DataFrame(genomeRowSum,columns=[name],index=allbins.index)
 	dfrowsums.to_csv(outputname,sep="\t")
 
-
 def getallChromsRowSums(coolpath,name,outputdir,resolution):
 	coolfile = cooler.Cooler(coolpath)
 	binsInfo = getBins(coolfile)

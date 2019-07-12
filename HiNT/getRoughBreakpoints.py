@@ -60,14 +60,23 @@ def getAllRoughBreakpoints(matrix100kbInfo,background100kbInfo,rpInfo,outdir,nam
 	p.close()
 	p.join()
 
-	#print results
-	with open(bpoutputfile,'w') as outf:
-		for i,line in enumerate(results[0]):
-			if i == 0:
-				outf.write(line[0])
-				outf.write(line[1])
-			else:
-				outf.write(line[1])
+	validResults = []
+	for line in results[0]:
+		if line[1].strip() == 'NA':
+			pass
+		else:
+			validResults.append(line)
+	if len(validResults) > 0:
+		with open(bpoutputfile,'w') as outf:
+			for i,line in enumerate(validResults):
+				if i == 0:
+					outf.write(line[0])
+					outf.write(line[1])
+				else:
+					outf.write(line[1])
+	else:
+		Info("No valid breakpoints detected!")
+		sys.exit(0)
 	return bpoutputfile,DivisionMatrixInfo
 
 ##################################################################################################
@@ -503,4 +512,3 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 	outf.close()
 
 	return validbpoutputfile
-

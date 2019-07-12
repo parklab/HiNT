@@ -89,16 +89,19 @@ searchMatric <- function(matrixf,chrompair,threads){
 	registerDoParallel(cores=strtoi(threads))
 	breakpoints_row <- breakpoints(rowsum ~ 1, h=5, breaks=10, hpc="foreach")$breakpoints
 	breakpoints_col <- breakpoints(colsum ~ 1, h=5, breaks=10, hpc="foreach")$breakpoints
-
-	max_row <- which(rowsum==max(rowsum))
-	max_col <- which(colsum==max(colsum))
-	validRowBP <- filtering(breakpoints_row,rowsum)
-	validColBP <- filtering(breakpoints_col,colsum)
-	bprow <- paste(validRowBP,collapse = ',')
-	bpcol <- paste(validColBP,collapse = ',')
-	#bprow <- paste(breakpoints_row, collapse = ',')
-	#bpcol <- paste(breakpoints_col, collapse = ',')
-	res <- cbind(chrompair,bprow,max_row,bpcol,max_col)
+	if(is.na(breakpoints_row[1]) | is.na(breakpoints_col[1])){
+		res <- NA
+	}else{
+		max_row <- which(rowsum==max(rowsum))
+		max_col <- which(colsum==max(colsum))
+		validRowBP <- filtering(breakpoints_row,rowsum)
+		validColBP <- filtering(breakpoints_col,colsum)
+		bprow <- paste(validRowBP,collapse = ',')
+		bpcol <- paste(validColBP,collapse = ',')
+		#bprow <- paste(breakpoints_row, collapse = ',')
+		#bpcol <- paste(breakpoints_col, collapse = ',')
+		res <- cbind(chrompair,bprow,max_row,bpcol,max_col)
+	}
 	return(res)
 }
 
@@ -135,19 +138,15 @@ searchBalancedMatric <- function(matrixf,chrompair,threads){
 	registerDoParallel(cores=strtoi(threads))
 	breakpoints_row <- breakpoints(subrowSum ~ 1, h=5, breaks=10, hpc="foreach")$breakpoints
 	breakpoints_col <- breakpoints(subcolSum ~ 1, h=5, breaks=10, hpc="foreach")$breakpoints
-
+	if(is.na(breakpoints_row)|is.na(breakpoints_col)){
+	res <- NA
+	}else{
 	max_row <- maxRIndex
 	max_col <- maxCIndex
-
-	#validRowBP <- filtering(breakpoints_row,rowsum)
-	#validColBP <- filtering(breakpoints_col,colsum)
-	#bprow <- paste(validRowBP,collapse = ',')
-	#bpcol <- paste(validColBP,collapse = ',')
-
 	bprow <- paste(breakpoints_row, collapse = ',')
 	bpcol <- paste(breakpoints_col, collapse = ',')
-
 	res <- cbind(chrompair,bprow,max_row,bpcol,max_col)
+	}
 	return(res)
 }
 
