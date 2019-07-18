@@ -41,7 +41,7 @@ Other dependencies
 
 * Method1: Install using conda (highly recommended)
 
-	``` $ conda install -c su hint=2.1.7```
+	``` $ conda install -c su hint=2.1.9```
 
 	or
 
