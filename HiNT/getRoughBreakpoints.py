@@ -513,5 +513,29 @@ def getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,outd
 		else:
 			print("This chromosomal pair (%s) is not valid"%chrompair)
 	outf.close()
-
 	return validbpoutputfile
+
+def validbpSummary(validbpoutputfile,rpInfo):
+	resolution = 100000
+	inf = open(validbpoutputfile)
+	output = validbpoutputfile.rstrip('.txt') + '_summarized.txt'
+	outf = open(output,'w')
+	title = ["chrompair","chrom1","region1","chrom2","region2","rankProduct"]
+	outf.write('\t'.join(title) + '\n')
+	allInfo = {}
+	for line in inf:
+		line = line.strip().split('\t')
+		chrompair,chrom1,bp1,chrom2,bp2 = line
+		rp = float(rpInfo[chrompair])
+		allInfo[chrompair] = [chrom1,bp1,chrom2,bp2,rp]
+
+	sortedInfo = sorted(allInfo.items(), key=lambda x: x[1][4], reverse=False)
+	for item in sortedInfo:
+		chrompair = item[0]
+		chrom1,bp1,chrom2,bp2,rp = item[1]
+		region1 = [str((int(bp1)-1)*resolution),str((int(bp1)+1)*resolution)]
+		region2 = [str((int(bp2)-1)*resolution),str((int(bp2)+1)*resolution)]
+		newline = [chrompair,chrom1,'-'.join(region1),chrom2,'-'.join(region2),str(rp)]
+		outf.write('\t'.join(newline) + '\n')
+	outf.close()
+	return output

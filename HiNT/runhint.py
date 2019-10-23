@@ -101,7 +101,7 @@ def translrun(args):
     chromlengthf = os.path.join(opts.referencedir, '%s.len'%opts.genome)
     Info("Prepare Matrices!")
     from HiNT.getRankProduct import readBackgroundMatrix,gini,getGini,getRankProduct,getRPinfo
-    from HiNT.getRoughBreakpoints import getDivisionMatrix,runBPcaller,getAllRoughBreakpoints,getchromsize,readBPs,mergeValidBPs,mergeBPs,relativefold,filtering,getValidRoughBP
+    from HiNT.getRoughBreakpoints import getDivisionMatrix,runBPcaller,getAllRoughBreakpoints,getchromsize,readBPs,mergeValidBPs,mergeBPs,relativefold,filtering,getValidRoughBP,validbpSummary
     if opts.format == 'cooler':
         from HiNT.coolToMatrix import getBins,dumpMatrix,coolToMatrix
         matrixfile1Mb,matrixfile100kb = opts.matrixfile
@@ -122,7 +122,9 @@ def translrun(args):
     RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
     validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath,opts.threads)
     if not opts.chimeric:
-        Info("Done! Find your translocation breakpoints file from %s. ;)"%validBPregionOutf)
+        summarizedValidBPoutf = validbpSummary(validbpoutputfile,rpInfo)
+        os.remove(validBPregionOutf)
+        Info("Done! Find your translocation breakpoints file from %s. ;)"%summarizedValidBPoutf)
     else:
         from HiNT.getBPfromChimericReads import extrac_nonHiCchimeric,makePairFormat,getchromsize,readFilteredBPs,is_qualified_clipped,getclipPos_pair,singleSide_clip_pos_calculation,further_filtering,getReads,getBPfromChimeras
         from HiNT.BPsummarization import readchemiricBPs,mergeCloseBPs,readchimericInfo,readGiniIndexf,readbpregionf,integration,getSummarizedBP
