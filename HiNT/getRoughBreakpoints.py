@@ -189,7 +189,10 @@ def mergeBPs(bps,matrix,axis,windowsize=5):
 				fca = suma/sumar
 				fcb = sumbr/sumb
 				if suma > sumbr and fca > fcb:
-					print("merge",np.nansum(matrix[a-1,:]), suma, sumar, np.nansum(matrix[b-1,:]),sumb, sumbr, fca, fcb)
+					if axis == "row":
+						print("merge",np.nansum(matrix[a-1,:]), suma, sumar, np.nansum(matrix[b-1,:]),sumb, sumbr, fca, fcb)
+					else:
+						print("merge",np.nansum(matrix[:,a-1]), suma, sumar, np.nansum(matrix[:,b-1]),sumb, sumbr, fca, fcb)
 					mergedbps.append(str(a))
 					mergedbps.remove(str(b))
 				elif suma < sumbr and fca > fcb:

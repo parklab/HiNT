@@ -29,7 +29,7 @@ svtype <- function(matrixf,chrompair){
 	maxCIndex = which(colsum == max(colsum,na.rm=T))
 	highCIndex = which(colsum == quantileFunc(colsum,0.999))
 
-	if(abs(maxRIndex-highRIndex)<=length(rowsum)*0.005 && (median(rowsum[(highRIndex-5):(highRIndex-1)],na.rm=T) > quantileFunc(rowsum,0.9)) && (median(rowsum[(maxRIndex+1):(maxRIndex+5)],na.rm=T) > quantileFunc(rowsum,0.9)) && abs(maxCIndex-highCIndex)<=length(colsum)*0.005 && (median(colsum[(maxCIndex-5):(maxCIndex-1)],na.rm=T) > quantileFunc(colsum,0.9)) && (median(colsum[(maxCIndex+1):(maxCIndex+5)],na.rm=T) > quantileFunc(colsum,0.9))){
+	if(abs(maxRIndex-highRIndex)<=length(rowsum)*0.005 && (median(rowsum[max(0,(highRIndex-5)):max(0,(highRIndex-1))],na.rm=T) > quantileFunc(rowsum,0.9)) && (median(rowsum[min((maxRIndex+1),length(rowsum)):min((maxRIndex+5),length(rowsum))],na.rm=T) > quantileFunc(rowsum,0.9)) && abs(maxCIndex-highCIndex)<=length(colsum)*0.005 && (median(colsum[max(0,(maxCIndex-5)):max(0,(maxCIndex-1))],na.rm=T) > quantileFunc(colsum,0.9)) && (median(colsum[min((maxCIndex+1),length(colsum)):min((maxCIndex+5),length(colsum))],na.rm=T) > quantileFunc(colsum,0.9))){
 		traltype = "balancedTRAL"
 		#print("Probably a balanced translocation")
 	}
