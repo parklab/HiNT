@@ -122,7 +122,7 @@ def translrun(args):
     RscriptBPcallerPath = resource_filename('HiNT', 'externalScripts/getBreakPoints2steps.R')
     validBPregionOutf = getValidRoughBP(chromlengthf,matrix100kbInfo,background100kbInfo,rpInfo,opts.outdir,opts.name,opts.cutoff,RscriptBPcallerPath,opts.threads)
     if not opts.chimeric:
-        summarizedValidBPoutf = validbpSummary(validbpoutputfile,rpInfo)
+        summarizedValidBPoutf = validbpSummary(validBPregionOutf,rpInfo)
         os.remove(validBPregionOutf)
         Info("Done! Find your translocation breakpoints file from %s. ;)"%summarizedValidBPoutf)
     else:
