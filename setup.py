@@ -1,6 +1,6 @@
 #!/home/sw229/miniconda2/bin/env python
 
-#version: 2.0
+#version: 2.2
 #author: Su Wang
 #Contact: wangsu0623@gmail.com
 
@@ -43,7 +43,7 @@ def main():
         sys.stderr.write("CRITICAL: Python version must be greater than or equal to 3.5!\n")
         sys.exit(1)
     setup(name="HiNT-Package",
-          version="2.2.0",
+          version="2.2.1",
           description="HiNT -- HiC for copy number vairations and translocations detection ",
           long_description=long_description,
           long_description_content_type='text/markdown',
