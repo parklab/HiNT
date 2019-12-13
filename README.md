@@ -98,6 +98,8 @@ HiNT cnv: prediction of copy number information, as well as segmentation from Hi
 
 ```$ hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
+```$ hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII --doiter```
+
 ```/path/to/BICseq2-seg_v0.7.3``` should be the path where you store this package
 
 see details and more options

@@ -125,7 +125,6 @@ def add_cnv_parser(subparsers):
                          help="the reference directory that downloaded from dropbox dropbox. (https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0.)")
     cnvparser.add_argument("--bicseq",dest="bicseq",type=str,required = True, help="/path/to/bicseqDir/")
     cnvparser.add_argument("--doiter",dest="doIterative",action='store_true',help = "If this switch is on, HiNT will do the iterative regression model by removing copy numer variated regions, DEFAULT=False",required=False,default=False)
-    cnvparser.add_argument("--doiter2",dest="doIterative2",required = False,action='store_true',default=False, help="/path/to/bicseqDir/")
     cnvparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer"), default="cooler",
                          help="Format for the output contact matrix, DEFAULT: cooler")
     cnvparser.add_argument("-e","--enzyme",dest="enzyme",choices = ("MboI","HindIII","DpnII"), default="MboI",required = False, help="enzyme used for the Hi-C experiments, will be used to calculate enzyme sites")
