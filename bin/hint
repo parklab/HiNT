@@ -35,7 +35,7 @@ HiNT for translocations detection
 
 This code is free software; you can redistribute it and/or modify it.
 
-@version: $2.2.1$
+@version: $2.2.7$
 @author: Su Wang
 @contact: wangsu0623@gmail.com
 """
@@ -52,7 +52,7 @@ def prepare_argparser():
     epilog = "For command line options of each command, type: %(prog)s COMMAND -h"
 
     argparser = ap.ArgumentParser( description = description, epilog = epilog) #, usage = usage
-    HiNT_VERSION = '2.2.1'
+    HiNT_VERSION = '2.2.7'
     argparser.add_argument("--version", action="version", version="%(prog)s " + HiNT_VERSION)
     subparsers = argparser.add_subparsers( help = "sub-command help", dest = 'subcommand_name' ) #help="sub-command help"
 
@@ -124,6 +124,8 @@ def add_cnv_parser(subparsers):
     cnvparser.add_argument("--refdir",dest="referencedir",type=str,required = True,
                          help="the reference directory that downloaded from dropbox dropbox. (https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0.)")
     cnvparser.add_argument("--bicseq",dest="bicseq",type=str,required = True, help="/path/to/bicseqDir/")
+    cnvparser.add_argument("--doiter",dest="doIterative",action='store_true',help = "If this switch is on, HiNT will do the iterative regression model by removing copy numer variated regions, DEFAULT=False",required=False,default=False)
+    cnvparser.add_argument("--doiter2",dest="doIterative2",required = False,action='store_true',default=False, help="/path/to/bicseqDir/")
     cnvparser.add_argument("-f","--format",dest="format",type=str,required = False, choices = ("cooler","juicer"), default="cooler",
                          help="Format for the output contact matrix, DEFAULT: cooler")
     cnvparser.add_argument("-e","--enzyme",dest="enzyme",choices = ("MboI","HindIII","DpnII"), default="MboI",required = False, help="enzyme used for the Hi-C experiments, will be used to calculate enzyme sites")
@@ -136,7 +138,6 @@ def add_cnv_parser(subparsers):
                          help="Prefix for the result files. If not set, 'NA' will be used instead")
     cnvparser.add_argument("-p","--threads", dest="threads", type=int, required = False, default=16,
                          help="Number of threads for running HiNT-cnv, DEFAULT: 16")
-
     return
 
 def add_translocation_parser(subparsers):

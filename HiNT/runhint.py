@@ -68,7 +68,7 @@ def prerun(args):
 def cnvrun(args):
     opts = opt_validate_hintcnv(args)
     from HiNT.prepare_regression import get_chromInfo,getGCpercent,getmappability,getRestrictionSitesInfo,getFragmentsNumber,Regression,getnonzeros,mergeAllchroms,prepareData
-    from HiNT.DoRegressionAllchroms import write_Rscript,DoRegression,sepResidualsByChrom,calculateResiduals
+    from HiNT.DoRegressionAllchroms import write_Rscript,DoRegression,sepResidualsByChrom,calculateResiduals,prepareIterativeRegression,write_IterativeGAMRscript,DoIterativeRegression
     from HiNT.doBICseq import makebinFiles,BICseqPrepare,run_BICseq
     chromlf = os.path.join(opts.referencedir,'%s.len'%opts.genome)
     if opts.format == 'cooler':
@@ -85,7 +85,7 @@ def cnvrun(args):
     restrictionSites = os.path.join(opts.referencedir, '%s_%s_enzymeSites.txt'%(opts.genome,opts.enzyme))
     chroms,regressionFileAllchroms,regressionChromFilesInfo = prepareData(opts.name,opts.outdir,opts.referencedir,chromlf,rowSumFilesInfo,binsize,GCPercent_1kb,mappablity_track,restrictionSites) #Prepare the other data Information for regression
     #print chroms
-    resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms) #form fuction DoregressionAllchroms, get residuals per chromosome
+    resiudalChromFilesInfo = calculateResiduals(opts.name,opts.outdir,regressionFileAllchroms,regressionChromFilesInfo,chroms,opts.doIterative) #form fuction DoregressionAllchroms, get residuals per chromosome
     #Segmentation step
     BICseqPath = os.path.join(opts.bicseq, 'BICseq2-seg.pl')
     CNVplotPath = resource_filename('HiNT', 'externalScripts/plot.l2r.ms_zoom.R')
