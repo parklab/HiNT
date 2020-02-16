@@ -1,4 +1,5 @@
 # HiNT 
+[![DOI](https://zenodo.org/badge/240967519.svg)](https://zenodo.org/badge/latestdoi/240967519)
 ## A computational method for detecting copy number variations and translocations from Hi-C data
 
 ## Summary
