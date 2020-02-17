@@ -42,7 +42,7 @@ Other dependencies
 
 * Method1: Install using conda (highly recommended)
 
-	``` $ conda install -c su hint=2.2.7```
+	``` $ conda install -c su hint```
 
 	or
 
@@ -95,7 +95,7 @@ HiNT cnv: prediction of copy number information, as well as segmentation from Hi
 
 ```$ hint cnv -m contactMatrix.cool -f cooler --refdir /path/to/refDir/hg19 -r 50 -g hg19 -n test -o /path/to/outputDir --bicseq /path/to/BICseq2-seg_v0.7.3 -e MboI```
 
-```$ hint cnv -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/50000 -f cooler --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
+```$ hint cnv -m /path/to/4DNFIS6HAUPP.mcool::/resolutions/50000 -f cooler --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII --maptrack 36mer```
 
 ```$ hint cnv -m /path/to/4DNFICSTCJQZ.hic -f juicer --refdir /path/to/refDir/hg38 -r 50 -g hg38 -n HepG2 --bicseq /path/to/BICseq2-seg_v0.7.3 -e DpnII```
 
