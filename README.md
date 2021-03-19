@@ -50,7 +50,7 @@ Other dependencies
 	
 * Method2: Install from PyPI using pip.
 
-	``` $ pip install HiNT-Packages```
+	``` $ pip install HiNT-Package```
 
 * Method3: Install manually 
   1. Install HiNT dependencies
