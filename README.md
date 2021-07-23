@@ -67,11 +67,11 @@ Other dependencies
 
 	See details of the usage on HiNT page at [docker hub](https://hub.docker.com/r/suwangbio/hint) 
 
-### Download reference files used in HiNT [HERE](https://www.dropbox.com/sh/2ufsyu4wvrboxxp/AABk5-_Fwy7jdM_t0vIsgYf4a?dl=0)
+### Download reference files used in HiNT [HERE](http://compbio.med.harvard.edu/hint/)
 
-1. Download HiNT references [HERE](https://www.dropbox.com/sh/qas48d7409t2syz/AACk5G2ngZ0vylLXsLFZXif_a?dl=0). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
-2. Download HiNT background matrices [HERE](https://www.dropbox.com/sh/fyxx9u5g5vn57ez/AAAx-DtByKaU6HvTYyEUvCzRa?dl=0). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
-3. Download BWA index files [HERE](https://www.dropbox.com/sh/l004df4108s6d3c/AAB6qtS95mBK_MdDZYlo2V-pa?dl=0). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
+1. Download HiNT references [HERE](http://compbio.med.harvard.edu/hint/refData/). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
+2. Download HiNT background matrices [HERE](http://compbio.med.harvard.edu/hint/backgroundMatrices/). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
+3. Download BWA index files [HERE](http://compbio.med.harvard.edu/hint/BWAIndex/). Only hg19, hg38 and mm10 are available currently. Unzip it ```$ unzip hg19.zip ```
 
 ## Quick Start
 
